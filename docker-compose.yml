@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+  app:
+    container_name: solun-app
+    image: solun-app
+    build: .
+    volumes:
+      - ./solun/src:/app/src
+      - ./solun/node_modules:/app/node_modules
+    environment:
+      MONGO_URL: solun-db  
+    ports:
+      - "3000:3000"
+    networks:
+      - solun-app-network
+    depends_on:
+      - solun-db
+
+  solun-db:
+    container_name: solun-db
+    image: mongo
+    volumes:
+      - /solun:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - solun-app-network
+
+networks:
+  solun-app-network:
+    driver: bridge
