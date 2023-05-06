@@ -1,0 +1,53 @@
+"use client";
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+
+const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  return (
+    <div className="bg-gray-950 py-4">
+      <div className="container mx-auto flex justify-between items-center px-4">
+        <div className="text-gray-100 font-bold text-xl">Solun</div>
+        <div className="hidden md:flex space-x-4">
+          <Link href="/encrypt-message" className="text-gray-300 hover:text-white transition duration-200">Encrypt Message
+          </Link>
+          <Link href="/upload-file" className="text-gray-300 hover:text-white transition duration-200">Upload File
+          </Link>
+        </div>
+        <div className="md:hidden">
+          <button onClick={toggleMenu} className="text-gray-300 hover:text-white transition duration-200">
+            <FontAwesomeIcon icon={faBars} />
+          </button>
+        </div>
+        <div>
+          <button className="border border-blue-500 hover:bg-blue-500 hover:text-white text-blue-500 font-semibold px-4 py-2 rounded-l transition duration-200 mr-2">
+            Sign In
+          </button>
+          <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-r transition duration-200">
+            Sign Up
+          </button>
+        </div>
+      </div>
+      {isMenuOpen && (
+        <div className="container mx-auto px-4 mt-4">
+          <nav className="md:hidden bg-gray-900 rounded-lg p-4 space-y-4">
+            <Link href="/encrypt-message" className="text-gray-300 hover:text-white transition duration-200 block" onClick={toggleMenu}>Encrypt Message
+            </Link>
+            <Link href="/upload-file" className="text-gray-300 hover:text-white transition duration-200 block" onClick={toggleMenu}>Upload File
+            </Link>
+          </nav>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Header;
