@@ -16,10 +16,6 @@ export const metadata = {
   tags: ['Solun', 'Privacy', 'Anonymous', 'Encryption', 'Files', 'Text', 'Emails', 'Share Files', 'Upload Files', 'Send Encrypted Texts'],
 }
 
-// TODO: Add Footer to the layout
-// atm. the fucking footer is diretly embedded in the page not in the layout?????
-// idk how to fix this lol
-
 export default function RootLayout({
   children,
 }: {
@@ -30,6 +26,7 @@ export default function RootLayout({
       <body>
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

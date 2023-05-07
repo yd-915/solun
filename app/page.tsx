@@ -3,11 +3,10 @@ import Services from '@/components/services'
 import WhySolun from '@/components/whySolun'
 import Testimonials from '@/components/testimonials'
 import CTABanner from '@/components/CTABanner'
-import Footer from '@/components/footer'
 
 export default function Home() {
   return (
-    <div className="bg-primary h-screen">
+    <div className="bg-primary">
       <section>
         <Welcomer />
       </section>
@@ -23,7 +22,6 @@ export default function Home() {
       <section>
         <CTABanner />
       </section>
-      <Footer />
     </div>
   )
 }
