@@ -6,7 +6,7 @@ import CTABanner from '@/components/CTABanner'
 
 export default function Home() {
   return (
-    <div className="bg-primary">
+    <div className="bg-primary min-h-screen">
       <section>
         <Welcomer />
       </section>

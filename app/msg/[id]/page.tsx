@@ -1,6 +1,6 @@
 export default function ViewMessage() {
   return (
-    <div className="bg-primary h-screen">
+    <div className="bg-primary min-h-screen">
         
     </div>
   )

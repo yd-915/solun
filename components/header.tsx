@@ -15,11 +15,13 @@ const Header = () => {
   return (
     <header className="bg-gray-950 py-4">
       <div className="container mx-auto flex justify-between items-center px-4">
+        <Link href="/">
         <div className="text-gray-100 font-bold text-xl">Solun</div>
+        </Link>
         <div className="hidden md:flex space-x-4">
-          <Link href="/encrypt-message" className="text-gray-300 hover:text-white transition duration-200">Encrypt Message
+          <Link href="/msg" className="text-gray-300 hover:text-white transition duration-200">Encrypt Message
           </Link>
-          <Link href="/upload-file" className="text-gray-300 hover:text-white transition duration-200">Upload File
+          <Link href="/file" className="text-gray-300 hover:text-white transition duration-200">Upload File
           </Link>
         </div>
         <div className="md:hidden">
@@ -39,9 +41,9 @@ const Header = () => {
       {isMenuOpen && (
         <div className="container mx-auto px-4 mt-4">
           <nav className="md:hidden bg-gray-900 rounded-lg p-4 space-y-4">
-            <Link href="/encrypt-message" className="text-gray-300 hover:text-white transition duration-200 block" onClick={toggleMenu}>Encrypt Message
+            <Link href="/msg" className="text-gray-300 hover:text-white transition duration-200 block" onClick={toggleMenu}>Encrypt Message
             </Link>
-            <Link href="/upload-file" className="text-gray-300 hover:text-white transition duration-200 block" onClick={toggleMenu}>Upload File
+            <Link href="/file" className="text-gray-300 hover:text-white transition duration-200 block" onClick={toggleMenu}>Upload File
             </Link>
           </nav>
         </div>
