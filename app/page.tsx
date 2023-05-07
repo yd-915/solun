@@ -1,6 +1,9 @@
-import Head from 'next/head'
 import Welcomer from '@/components/welcomer'
 import Services from '@/components/services'
+import WhySolun from '@/components/whySolun'
+import Testimonials from '@/components/testimonials'
+import CTABanner from '@/components/CTABanner'
+import Footer from '@/components/footer'
 
 export default function Home() {
   return (
@@ -11,6 +14,16 @@ export default function Home() {
       <section>
         <Services />
       </section>
+      <section>
+        <WhySolun />
+      </section>
+      <section>
+        <Testimonials />
+      </section>
+      <section>
+        <CTABanner />
+      </section>
+      <Footer />
     </div>
   )
 }

@@ -6,6 +6,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
 
 import Header from '@/components/header'
+import Footer from '@/components/footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,6 +15,10 @@ export const metadata = {
   description: 'Solun is a service that allows you to share files, text and sending emails with end-to-end encryption, without storing any user related data on our servers. Become anonymous and protect your privacy today.',
   tags: ['Solun', 'Privacy', 'Anonymous', 'Encryption', 'Files', 'Text', 'Emails', 'Share Files', 'Upload Files', 'Send Encrypted Texts'],
 }
+
+// TODO: Add Footer to the layout
+// atm. the fucking footer is diretly embedded in the page not in the layout?????
+// idk how to fix this lol
 
 export default function RootLayout({
   children,
@@ -25,7 +30,7 @@ export default function RootLayout({
       <body>
         <Header />
         {children}
-        </body>
+      </body>
     </html>
   );
 }

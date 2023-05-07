@@ -13,7 +13,7 @@ const Header = () => {
   };
 
   return (
-    <div className="bg-gray-950 py-4">
+    <header className="bg-gray-950 py-4">
       <div className="container mx-auto flex justify-between items-center px-4">
         <div className="text-gray-100 font-bold text-xl">Solun</div>
         <div className="hidden md:flex space-x-4">
@@ -46,7 +46,7 @@ const Header = () => {
           </nav>
         </div>
       )}
-    </div>
+    </header>
   );
 };
 

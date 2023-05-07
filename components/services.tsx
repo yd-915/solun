@@ -49,7 +49,7 @@ const Services = () => {
         buttonText: 'Use Service',
         additionalDetails: (
           <div>
-            <li>The message is encrypted with AES-128 when saved to the system.</li>
+            <li>The message is encrypted with AES-256 when saved to the system.</li>
             <li>The message is deleted from the system after being read and cannot be restored.</li>
           </div>
         ),
@@ -84,7 +84,7 @@ const Services = () => {
   return (
     <div className="container mx-auto px-4 py-8 md:py-16" style={{ background: '#11141f' }}>
       <h2 className="text-4xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-blue-600">Services</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center justify-center">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center justify-center">
         {services.map((service, index) => (
           <ServiceCard key={index} {...service} />
         ))}
