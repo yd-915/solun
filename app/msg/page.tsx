@@ -15,7 +15,7 @@ function CreateMessage() {
     }
   };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const target = e.target as typeof e.target & {
         message: { value: string };
@@ -27,7 +27,7 @@ function CreateMessage() {
         message,
         bruteforceSafe,
         };
-        fetch('/api/message', {
+        await fetch('/api/message', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
