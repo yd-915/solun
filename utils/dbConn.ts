@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 const MONGODB_URL = process.env.MONGODB_URL;
 
+
 if (!MONGODB_URL) {
   throw new Error('Please define the MONGODB_URL environment variable inside .env.local');
 }
@@ -22,23 +23,12 @@ async function dbConnect() {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             bufferCommands: false,
-            bufferMaxEntries: 0,
-            useFindAndModify: false,
-            useCreateIndex: true,
         };
 
-        cached.promise = mongoose.connect(MONGODB_URL, opts).then((mongoose) => {
-            return mongoose;
-        });
+        cached.promise = mongoose.connect(MONGODB_URL, opts).then(mongoose => mongoose);
     }
 
-    try {
-        cached.conn = await cached.promise;
-    } catch (err) {
-        cached.promise = null;
-        throw err;
-    }
-
+    cached.conn = await cached.promise;
     return cached.conn;
 }
 
