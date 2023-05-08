@@ -10,6 +10,10 @@ const messageSchema = new mongoose.Schema({
             type: String,
             required: true,
         },
+        secret: {
+            type: String,
+            required: true,
+        },
     },
     {
         timestamps: true,
