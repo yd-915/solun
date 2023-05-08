@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faFile, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
 
-const ServiceCard = ({ icon, title, description, buttonText, additionalDetails } : any) => {
+const ServiceCard = ({ icon, title, description, buttonText, additionalDetails, buttonLink } : any) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const toggleDetails = () => {
@@ -30,11 +31,14 @@ const ServiceCard = ({ icon, title, description, buttonText, additionalDetails }
         >
           {showDetails ? 'Hide Details' : 'Show Details'}
         </button>
-        <button
-          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded transition duration-200 shadow-md ml-2"
-        >
-          {buttonText}
-        </button>
+          <button
+            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded transition duration-200 shadow-md ml-2"
+            onClick={() => {
+              location.href = buttonLink;
+            }}
+          >
+            {buttonText}
+          </button>
       </div>
     </div>
   );
@@ -47,10 +51,14 @@ const Services = () => {
         title: 'Encrypted Messages',
         description: 'Send encrypted messages to your friends via a secure link. Messages are automatically deleted after they are viewed.',
         buttonText: 'Use Service',
+        buttonLink: '/msg',
         additionalDetails: (
           <div>
-            <li>The message is encrypted with AES-256 when saved to the system.</li>
-            <li>The message is deleted from the system after being read and cannot be restored.</li>
+            <p>The message system ensures high security by encrypting messages with AES-256 when saved.
+              They are only decrypted when viewed by the recipient.<br/><br/>
+              Each message has a unique AES 32-byte secret key.
+              After being read, messages are permanently deleted from the system, ensuring they cannot be restored.<br/><br/>
+              This guarantees a secure and confidential communication platform.</p>
           </div>
         ),
       },
@@ -59,6 +67,7 @@ const Services = () => {
         title: 'Encrypted Upload',
         description: 'Share files securely with adjustable online duration. Simply upload your files, define how long they should be available, and send the secure link to your recipient.',
         buttonText: 'Use Service',
+        buttonLink: '/file',
         additionalDetails: (
           <div>
             <p>The file is stored in our system on encrypted disks with government-certified (SED) security for the chosen duration and is immediately removed upon expiration.</p>
@@ -70,6 +79,7 @@ const Services = () => {
         title: 'Private Mail',
         description: 'Get your own secure mailbox for confidential conversations. Enjoy the convenience of encrypted emails and keep your communication private.',
         buttonText: 'Get Started',
+        buttonLink: '/',
         additionalDetails: (
           <div>
             <li>Choose a domain and username.</li>

@@ -17,7 +17,7 @@ export default function Home() {
         <WhySolun />
       </section>
       <section>
-        <Testimonials />
+        {/* <Testimonials /> */}
       </section>
       <section>
         <CTABanner />

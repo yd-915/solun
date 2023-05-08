@@ -127,6 +127,9 @@ function CreateMessage() {
                   navigator.clipboard.writeText(`${messageLink}`);
                   const copyButton = document.getElementById('copy') as HTMLButtonElement;
                   copyButton.innerHTML = "Copied!";
+                  setTimeout(() => {
+                    copyButton.innerHTML = "Copy Link";
+                  }, 1200);
                 }}
               >
                 Copy Link
