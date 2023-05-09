@@ -14,11 +14,6 @@ const messageSchema = new mongoose.Schema({
             type: String,
             required: true,
         },
-        isPassword: {
-            type: Boolean,
-            required: true,
-            default: false,
-        },
         password: {
             type: String,
             required: false,

@@ -13,6 +13,8 @@ export async function POST(request: Request) {
 
         let message_text = res.message;
         let bruteforceSafe = res.bruteforceSafe;
+        let password = res.password;
+
 
         if (!message_text) {
             return NextResponse.json({ message: "Please enter a message" }, { status: 400 });
@@ -21,12 +23,15 @@ export async function POST(request: Request) {
         const mid = await generateID(bruteforceSafe);
         const secret_key = await generateAES();
         const encrypted_message = await encrypt(message_text, secret_key);
-
-
+        
+        const passwordSet = password !== "";
+        const encrypted_password = passwordSet ? await encrypt(password, secret_key) : null;
+        
         const insertMessage = new Message({
-            message_id: mid,
-            message: encrypted_message,
-            secret: secret_key,
+          message_id: mid,
+          message: encrypted_message,
+          secret: secret_key,
+          password: encrypted_password
         });
 
         await insertMessage.save();
