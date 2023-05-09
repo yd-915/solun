@@ -22,10 +22,10 @@ export async function POST(request: Request) {
 
         const mid = await generateID(bruteforceSafe);
         const secret_key = await generateAES();
-        const encrypted_message = await encrypt(message_text, secret_key);
+        const encrypted_message = await encrypt(message_text, secret_key as string);
         
         const passwordSet = password !== "";
-        const encrypted_password = passwordSet ? await encrypt(password, secret_key) : null;
+        const encrypted_password = passwordSet ? await encrypt(password, secret_key as string) : null;
         
         const insertMessage = new Message({
           message_id: mid,
