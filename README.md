@@ -1,4 +1,3 @@
-This is
 <a name="readme-top"></a>
 
 <br />
@@ -30,7 +29,7 @@ This is
     </li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+
     
   </ol>
 </details>
@@ -50,7 +49,8 @@ Whatsapp, Telegram, Signal, etc.
 
 ### Built With
 * [![Next][Next.js]][Next-url]
-* [![Docker][Docker]][Docker-url]
+* ![Docker](https://img.shields.io/static/v1?style=for-the-badge&message=Docker&color=2496ED&logo=Docker&logoColor=FFFFFF&label=)
+* ![MongoDB](https://img.shields.io/static/v1?style=for-the-badge&message=MongoDB&color=47A248&logo=MongoDB&logoColor=FFFFFF&label=)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -121,10 +121,6 @@ Project Link: [solun.pm](solun.pm)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-* [Dockerization by schroeder-is](https://jannik.schroeder.is)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
