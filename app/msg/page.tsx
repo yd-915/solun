@@ -82,7 +82,7 @@ function CreateMessage() {
             <form onSubmit={handleSubmit}>
               <div id="pad">
                 <textarea
-                  className="bg-slate-950 text-white textarea w-full p-2 border-2 border-blue-500 rounded-lg"
+                  className="bg-slate-950 text-white textarea w-full p-2 border-2 border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:shadow-md focus:shadow-blue-700 transition duration-200"
                   name="message"
                   id="message"
                   placeholder="Write down your private message..."
@@ -96,11 +96,9 @@ function CreateMessage() {
                     type={passwordVisible ? "text" : "password"}
                     id="password"
                     name="password"
-                    className="bg-slate-950 text-white rounded-lg block p-2 pr-10"
+                    className="bg-slate-950 text-white rounded-lg block p-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:shadow-md focus:shadow-blue-700 transition duration-200"
                     placeholder="Optional Password"
                     minLength={1}
-                    pattern="/^\S+$/"
-                    alt="Password can't contain spaces"
                     onChange={handlePasswordChange}
                   />
                   {password.length > 0 && (
@@ -153,7 +151,7 @@ function CreateMessage() {
                   type="text"
                   value={`${messageLink}`}
                   readOnly
-                  className="bg-slate-950 text-white w-full p-2 rounded-lg blur-sm hover:blur-none transition duration-300"
+                  className="bg-slate-950 text-white w-full p-2 rounded-lg blur-[3px] hover:blur-none transition duration-300 focus:outline-none"
                 />
               </div>
               <button
