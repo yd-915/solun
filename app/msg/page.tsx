@@ -117,7 +117,7 @@ function CreateMessage() {
                   type="text"
                   value={`${messageLink}`}
                   readOnly
-                  className="bg-slate-950 text-white w-full p-2 rounded-lg"
+                  className="bg-slate-950 text-white w-full p-2 rounded-lg blur-sm hover:blur-none transition duration-300"
                 />
               </div>
               <button
