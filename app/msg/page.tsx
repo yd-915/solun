@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+
 
 function CreateMessage() {
   const [bruteforceSafe, setBruteforceSafe] = useState(false);
@@ -9,6 +12,8 @@ function CreateMessage() {
   const [messageCreated, setMessageCreated] = useState(false);
   const [messageLink, setMessageLink] = useState('');
 
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [password, setPassword] = useState("");
 
   const handleBruteforceToggle = () => {
     setBruteforceSafe(!bruteforceSafe);
@@ -19,11 +24,20 @@ function CreateMessage() {
     }
   };
 
+  const handlePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+    const handlePasswordChange = (event : any) => {
+      setPassword(event.target.value);
+    }; 
+
     const handleSubmit = async (e: React.FormEvent) => {
           e.preventDefault();
           const target = e.target as typeof e.target & {
           message: { value: string };
           bruteforceSafe: { checked: boolean };
+          password: { value: string };
         };
 
         // Set Button disabled and add loading animation and text "Creating Message"
@@ -33,9 +47,11 @@ function CreateMessage() {
 
         const message = target.message.value;
         const bruteforceSafe = target.bruteforceSafe.checked;
+        const password = target.password.value;
         const data = {
           message,
           bruteforceSafe,
+          password
         };
           const res = await fetch('/api/message/create', {
               method: 'POST',
@@ -66,7 +82,7 @@ function CreateMessage() {
             <form onSubmit={handleSubmit}>
               <div id="pad">
                 <textarea
-                  className="bg-slate-950 text-white textarea w-full p-2 border-2 border-blue-500 rounded-lg"
+                  className="bg-slate-950 text-white textarea w-full p-2 border-2 border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:shadow-md focus:shadow-blue-700 transition duration-200"
                   name="message"
                   id="message"
                   placeholder="Write down your private message..."
@@ -75,16 +91,23 @@ function CreateMessage() {
                 ></textarea>
               </div>
               <div className="flex justify-between items-center mt-4">
-                <div className="flex items-center">
+                <div className="relative flex items-center">
                   <input
-                    type="checkbox"
-                    id="bruteforceSafe"
-                    className="mr-2"
-                    onChange={handleBruteforceToggle}
+                    type={passwordVisible ? "text" : "password"}
+                    id="password"
+                    name="password"
+                    className="bg-slate-950 text-white rounded-lg block p-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:shadow-md focus:shadow-blue-700 transition duration-200"
+                    placeholder="Optional Password"
+                    minLength={1}
+                    onChange={handlePasswordChange}
                   />
-                  <label htmlFor="bruteforceSafe" className="text-white">
-                    Bruteforce Safe (90 Chars)
-                  </label>
+                  {password.length > 0 && (
+                  <div className="h-6 w-6 text-slate-300 absolute right-2">
+                    <FontAwesomeIcon id="pwd-icon" icon={passwordVisible ? faEye : faEyeSlash}
+                    onClick={handlePasswordVisibility}
+                    />
+                  </div>
+                  )}
                 </div>
                 <button
                   type="submit"
@@ -93,6 +116,17 @@ function CreateMessage() {
                 >
                   Create Message
                 </button>
+              </div>
+              <div className="flex items-center mt-4">
+                <input
+                  type="checkbox"
+                  id="bruteforceSafe"
+                  onChange={handleBruteforceToggle}
+                  className="mr-2 w-3.5 h-3.5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                />
+                <label htmlFor="bruteforceSafe" className="text-white">
+                  Bruteforce Safe (90 Chars)
+                </label>
               </div>
               <div className="mt-4">
                 <span className="text-slate-300">Example Link:</span>
@@ -117,7 +151,7 @@ function CreateMessage() {
                   type="text"
                   value={`${messageLink}`}
                   readOnly
-                  className="bg-slate-950 text-white w-full p-2 rounded-lg blur-sm hover:blur-none transition duration-300"
+                  className="bg-slate-950 text-white w-full p-2 rounded-lg blur-[3px] hover:blur-none transition duration-300 focus:outline-none"
                 />
               </div>
               <button
