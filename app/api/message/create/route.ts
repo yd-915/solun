@@ -14,6 +14,7 @@ export async function POST(request: Request) {
         let message_text = res.message;
         let bruteforceSafe = res.bruteforceSafe;
         let password = res.password;
+        let endToEndEncryption = res.endToEndEncryption;
 
 
         if (!message_text) {
@@ -26,20 +27,27 @@ export async function POST(request: Request) {
         
         const passwordSet = password !== "";
         const encrypted_password = passwordSet ? await encrypt(password, secret_key as string) : null;
+
+        const dbSecretKey = endToEndEncryption ? null : secret_key;
         
         const insertMessage = new Message({
           message_id: mid,
           message: encrypted_message,
-          secret: secret_key,
+          secret: dbSecretKey,
           password: encrypted_password
         });
 
         await insertMessage.save();
 
+        let link = "https://solun.pm/msg/" + mid + "/";
+        if (endToEndEncryption) {
+            link += secret_key + "/";
+        }
+
         return NextResponse.json({
             message: "Message created successfully",
             message_id: mid,
-            link: "https://solun.pm/msg/" + mid + "/",
+            link: link,
         }, {
             status: 200,
         });

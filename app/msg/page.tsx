@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 
 
 function CreateMessage() {
@@ -38,6 +38,7 @@ function CreateMessage() {
           message: { value: string };
           bruteforceSafe: { checked: boolean };
           password: { value: string };
+          endToEndEncryption: { checked: boolean };
         };
 
         // Set Button disabled and add loading animation and text "Creating Message"
@@ -48,10 +49,12 @@ function CreateMessage() {
         const message = target.message.value;
         const bruteforceSafe = target.bruteforceSafe.checked;
         const password = target.password.value;
+        const endToEndEncryption = target.endToEndEncryption.checked;
         const data = {
           message,
           bruteforceSafe,
-          password
+          password,
+          endToEndEncryption
         };
           const res = await fetch('/api/message/create', {
               method: 'POST',
@@ -122,10 +125,20 @@ function CreateMessage() {
                   type="checkbox"
                   id="bruteforceSafe"
                   onChange={handleBruteforceToggle}
-                  className="mr-2 w-3.5 h-3.5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  className="mr-2 w-3.5 h-3.5 text-blue-600 bg-gray-100 border-gray-300 rounded"
                 />
                 <label htmlFor="bruteforceSafe" className="text-white">
                   Bruteforce Safe (90 Chars)
+                </label>
+              </div>
+              <div className="flex items-center mt-4">
+                <input
+                  type="checkbox"
+                  id="endToEndEncryption"
+                  className="mr-2 w-3.5 h-3.5 text-blue-600 bg-gray-100 border-gray-300 rounded"
+                />
+                <label htmlFor="endToEndEncryption" className="text-white">
+                  End-to-End Encryption
                 </label>
               </div>
               <div className="mt-4">
