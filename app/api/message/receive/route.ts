@@ -1,12 +1,60 @@
 import dbConnect from "@/utils/dbConn";
-import { decrypt } from "@/utils/encryption";
 import { NextResponse } from "next/server";
+import { findOneDocument } from "@/utils/dbUtils";
+import { decrypt } from "@/utils/encryption";
+import Message from "@/models/message";
 
 export async function POST(request: Request) {
-    try {
-        return NextResponse.json({ message: "Hello World" }, { status: 200 });
+  try {
+    const res = await request.json();
+
+    await dbConnect();
+    let id = res.id;
+    let password = res.password;
+
+    if (!id) {
+      return NextResponse.json({ message: "No message ID provided" }, { status: 400 });
     }
-    catch (err) {
-        return NextResponse.json({ message: "An error occurred while receiving the message, please try again" }, { status: 500 });
+
+    const message = await findOneDocument(Message, { message_id: id });
+
+    if (message) {
+      const secret_key = message.secret;
+
+      if (message.password) {
+        if (!password) {
+          return NextResponse.json({ message: "This message requires a password" }, { status: 400 });
+        } else {
+          const decrypted_password = await decrypt(message.password, secret_key);
+
+          if (password !== decrypted_password) {
+            return NextResponse.json({ message: "Incorrect password" }, { status: 403 });
+          }
+        }
+      }
+
+      const decrypted_message = await decrypt(message.message, secret_key);
+      return NextResponse.json({
+        valid: true,
+        message: decrypted_message,
+      }, {
+        status: 200,
+      });
+
+    } else {
+      return NextResponse.json({
+        valid: false,
+        message: "No message found with this ID",
+      }, {
+        status: 404,
+      });
     }
+  } catch (err) {
+    return NextResponse.json({
+      valid: false,
+      message: "An error occurred while retrieving the message, please try again: " + err,
+    }, {
+      status: 500,
+    });
+  }
 };
