@@ -25,7 +25,9 @@ function ViewMessage({ params }: { params: { id: string } }) {
       body: JSON.stringify(data),
     });
     const result = await res.json();
+    const notFoundField = document.getElementById("notFoundField")!;
     if (!res.ok) {
+      notFoundField.innerHTML = "Message not found.";
       setMessageExists(false);
     } else {
       setMessageExists(true);
@@ -144,7 +146,10 @@ function ViewMessage({ params }: { params: { id: string } }) {
             </div>
             </div>
           ) : passwordProtected ? (
-            <>
+            <div className="flex items-center justify-center flex-wrap flex-col">
+              <h1 className="text-2xl font-bold mb-4 text-gray-100">
+                Enter Password
+              </h1>
               <input
                 type="password"
                 className="bg-slate-950 text-white rounded-lg block p-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:shadow-md focus:shadow-blue-700 transition duration-200"
@@ -159,7 +164,7 @@ function ViewMessage({ params }: { params: { id: string } }) {
               >
                 {renderButtonContent()}
               </button>
-            </>
+            </div>
           ) : (
             <div className="flex justify-center items-center">
               <button
@@ -172,9 +177,9 @@ function ViewMessage({ params }: { params: { id: string } }) {
             </div>
           )
         ) : (
-          <p className="text-white">Message not found.</p>
+          <p id="notFoundField" className="text-white">Checking your link...</p>
         )}
-        {error && <p className="text-red-500 mt-2">{error}</p>}
+        {error && <p className="text-red-500 mt-2 text-center">{error}</p>}
       </div>
     </div>
   );
