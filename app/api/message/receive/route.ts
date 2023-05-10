@@ -11,6 +11,7 @@ export async function POST(request: Request) {
     await dbConnect();
     let id = res.id;
     let password = res.password;
+    let secret_key = res.secret || null;
 
     if (!id) {
       return NextResponse.json({ message: "No message ID provided" }, { status: 400 });
@@ -19,7 +20,7 @@ export async function POST(request: Request) {
     const message = await findOneDocument(Message, { message_id: id });
 
     if (message) {
-      const secret_key = message.secret;
+      secret_key = secret_key || message.secret;
 
       if (message.password) {
         if (!password) {

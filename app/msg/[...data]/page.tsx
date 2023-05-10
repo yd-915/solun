@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 
-function ViewMessage({ params }: { params: { id: string } }) {
-  const { id } = params;
+function ViewMessage({ params }: { params: { data: string[] } }) {
+  const id = params.data[0];
+  const secret = params.data[1];
 
   const [passwordProtected, setPasswordProtected] = useState(false);
   const [messageExists, setMessageExists] = useState(false);
@@ -56,12 +57,13 @@ function ViewMessage({ params }: { params: { id: string } }) {
     }
   }
 
-  async function handleViewMessage() {
+  async function handleViewMessage(secretKey: string) {
     setLoading(true);
     setError("");
     const data = {
       id,
       password,
+      secret: secretKey,
     };
     const res = await fetch("/api/message/receive", {
       method: "POST",
@@ -159,7 +161,7 @@ function ViewMessage({ params }: { params: { id: string } }) {
               />
               <button
                 className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded transition duration-200 shadow-md ml-2 mt-2"
-                onClick={handleViewMessage}
+                onClick={() => handleViewMessage(secret)}
                 disabled={loading}
               >
                 {renderButtonContent()}
@@ -169,7 +171,7 @@ function ViewMessage({ params }: { params: { id: string } }) {
             <div className="flex justify-center items-center">
               <button
                 className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded transition duration-200 shadow-md mt-2"
-                onClick={handleViewMessage}
+                onClick={() => handleViewMessage(secret)}
                 disabled={loading}
               >
                 {renderButtonContent()}
