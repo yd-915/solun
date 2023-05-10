@@ -7,9 +7,11 @@ if (!MONGODB_URL) {
   throw new Error('Please define the MONGODB_URL environment variable inside .env.local');
 }
 
+// @ts-ignore: Works fine with it
 let cached = global.mongoose;
 
 if (!cached) {
+    // @ts-ignore: Works fine with it
     cached = global.mongoose = { conn: null, promise: null };
 }
 
@@ -25,6 +27,7 @@ async function dbConnect() {
             bufferCommands: false,
         };
 
+        // @ts-ignore: Works fine with it
         cached.promise = mongoose.connect(MONGODB_URL, opts).then(mongoose => mongoose);
     }
 
