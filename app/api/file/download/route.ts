@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   try {
     const res = await request.json();
     await dbConnect();
-    let id = res.id;
+    const id = res.id;
     let secret_key = res.secret || null;
 
     if (!id) {
@@ -18,12 +18,13 @@ export async function POST(request: Request) {
     const file = await findOneDocument(File, { file_id: id });
 
     if (file) {
+      secret_key = secret_key || file.secret;
+
       const file_path = file.raw_file_path;
       const file_name = file.file_name;
 
-      // read the file content as binary data
       const fileData = await fs.promises.readFile(file_path);
-      const fileDataEncoded = Buffer.from(fileData).toString('base64');
+      const fileDataEncoded = fileData.toString('hex');
 
       return NextResponse.json({ fileData: fileDataEncoded, secretKey: secret_key, file_name: file_name }, { status: 200 });
     } else {
@@ -32,4 +33,4 @@ export async function POST(request: Request) {
   } catch (err) {
     return NextResponse.json({ message: "An error occurred while retrieving the file, please check if the link is correct and try again" }, { status: 500 });
   }
-};
+}

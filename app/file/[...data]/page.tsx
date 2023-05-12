@@ -111,15 +111,13 @@ function ViewFile({ params }: { params: { data: string[] } }) {
     }
 
     const result = await res.json();
-    const encryptedFileData = result.fileData;
+    const encryptedFileData = result.fileData as string;
     const serverSecretKey = result.secretKey;
     const fileName = result.file_name;
 
-    console.log("Encrypted file data:" + encryptedFileData);
-    console.log(serverSecretKey);
     const decryptedFileData = await decryptData(encryptedFileData, serverSecretKey);
     const blob = new Blob([decryptedFileData]);
-    console.log("Decrypted file data:")
+    console.log("Decrypted file data: ", decryptedFileData);
   
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
