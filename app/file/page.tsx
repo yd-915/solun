@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash, faQuestionCircle, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons'
+import generateAES from "@/utils/generateAES";
+import generateID from "@/utils/generateId";
+
 
 function UploadFile() {
   const [bruteforceSafe, setBruteforceSafe] = useState(false);
-  const [exampleLink, setExampleLink] = useState('A7bDg');
+  const [exampleLink, setExampleLink] = useState('');
+  const [endToEndEncryption, setEndToEndEncryption] = useState(false);
 
   const [uploadCreated, setUploadCreated] = useState(false);
   const [uploadLink, setUploadLink] = useState('');
@@ -17,12 +21,34 @@ function UploadFile() {
 
   const handleBruteforceToggle = () => {
     setBruteforceSafe(!bruteforceSafe);
-    if (!bruteforceSafe) {
-      setExampleLink('FghsaTG2t1dfjkl4elf85rkFlhiT9wiFmvkkeE751hJFGk518kl5fglvbnxjUkKJGurm845qmF82mF82kLc1m5GGMs');
-    } else {
-      setExampleLink('A7bDg');
-    }
   };
+
+  const handleEndToEndToggle = () => {
+    setEndToEndEncryption(!endToEndEncryption);
+  };
+
+  useEffect(() => {
+    const generateLink = async () => {
+      let link = '';
+
+      if (bruteforceSafe) {
+        const id = await generateID(true);
+        link += id;
+      } else {
+        const id = await generateID(false);
+        link += id;
+      }
+
+      if (endToEndEncryption) {
+        const aesKey = await generateAES();
+        link += `/${aesKey}`;
+      }
+
+      setExampleLink(link);
+    };
+
+    generateLink();
+  }, [bruteforceSafe, endToEndEncryption]);
 
   const handlePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -164,6 +190,7 @@ function UploadFile() {
                 <input
                   type="checkbox"
                   id="endToEndEncryption"
+                  onChange={handleEndToEndToggle}
                   className="mr-2 w-3.5 h-3.5 text-blue-600 bg-gray-100 border-gray-300 rounded"
                 />
                 <label htmlFor="endToEndEncryption" className="text-white">
@@ -173,11 +200,12 @@ function UploadFile() {
               <div className="flex flex-col mt-4">
                 <div className="relative">
                   <select
+                    defaultValue={"download"}
                     name="autoDeletion"
                     id="autoDeletion"
                     className="bg-slate-950 text-white rounded-lg block p-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:shadow-md focus:shadow-blue-700 transition duration-200"
                   >
-                    <option selected disabled hidden value="download">Choose Auto Deletion</option>
+                    <option disabled hidden value="download">Choose Auto Deletion</option>
                     <option value="download">1 Download</option>
                     <option value="1d">1 Day</option>
                     <option value="1w">1 Week</option>
