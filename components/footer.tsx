@@ -16,7 +16,7 @@ const Footer = () => {
           <div className="text-white">
             <h3 className="text-2xl font-bold mb-4">Quick Links</h3>
             <ul>
-              <li><a href="/about" className="hover:text-blue-300 transition duration-200">About Us</a></li>
+              <li><a href="https://github.com/solun-pm" target='_blank' className="hover:text-blue-300 transition duration-200">GitHub</a></li>
               <li><a href="/services" className="hover:text-blue-300 transition duration-200">Services</a></li>
               <li><a href="/contact" className="hover:text-blue-300 transition duration-200">Contact</a></li>
               <li><a href="/privacy" className="hover:text-blue-300 transition duration-200">Privacy Policy</a></li>
