@@ -5,8 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/utils/dbConn";
 import generateID from "@/utils/generateId";
 import generateAES from "@/utils/generateAES";
-import { encrypt } from "@/utils/encryption";
+import { encrypt, encryptFile } from "@/utils/encryption";
 import File from "@/models/file";
+import crypto from "crypto";
 
 
 export async function POST(request: NextRequest) {
@@ -22,7 +23,7 @@ export async function POST(request: NextRequest) {
     const file = formData.get("file") as Blob | null;
     if (!file) {
         return NextResponse.json(
-        { error: "File blob is required." },
+        { message: "Please upload a file" },
         { status: 400 }
         );
     }
@@ -45,29 +46,32 @@ export async function POST(request: NextRequest) {
         if (e.code === "ENOENT") {
         await mkdir(uploadDir, { recursive: true });
         } else {
-        console.error(
-            "Error while trying to create directory when uploading a file\n",
-        );
         return NextResponse.json(
-            { error: "Something went wrong." },
+            { message: "An error occurred while uploading the file" },
             { status: 500 }
         );
         }
     }
 
     try {
-        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+        const uniqueSuffix = `${crypto.randomBytes(64).toString('hex')}`;
         const systemFilename = `${uniqueSuffix}.${mime.getExtension(file.type)}`;
         const dbFilename = `${file.name.replace(
         /\.[^/.]+$/,
         ""
         )}.${mime.getExtension(file.type)}`;
-        await writeFile(`${uploadDir}/${systemFilename}`, buffer);
+        const filePath = `${uploadDir}/${systemFilename}`;
+        await writeFile(filePath, buffer);
+
+        await encryptFile(filePath, secret_key as string);
 
         const insertFile = new File({
             file_id: fid,
             file_path: 'https://solun.pm' + relativeUploadDir + systemFilename,
+            raw_file_path: filePath,
             file_name: dbFilename,
+            file_type: file.type,
+            file_size: file.size,
             auto_delete: autoDeletion,
             secret: dbSecretKey,
             password: encrypted_password
@@ -89,10 +93,9 @@ export async function POST(request: NextRequest) {
             { status: 200 }
         );
     } catch (e) {
-        console.error("Error while trying to upload a file\n", e);
         return NextResponse.json(
-        { error: "Something went wrong." },
+        { message: "An error occurred while uploading the file" },
         { status: 500 }
         );
     }
-    }
+}
