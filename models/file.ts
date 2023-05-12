@@ -10,8 +10,20 @@ const fileSchema = new mongoose.Schema({
             type: String,
             required: true,
         },
+        raw_file_path: {
+            type: String,
+            required: true,
+        },
         file_name: {
             type: String,
+            required: true,
+        },
+        file_type: {
+            type: String,
+            required: true,
+        },
+        file_size: {
+            type: Number,
             required: true,
         },
         auto_delete: {
