@@ -53,7 +53,7 @@ export async function POST(request: Request) {
   } catch (err) {
     return NextResponse.json({
       valid: false,
-      message: "An error occurred while retrieving the message, please try again: " + err,
+      message: "An error occurred while retrieving the message, please check if the link is correct and try again",
     }, {
       status: 500,
     });
