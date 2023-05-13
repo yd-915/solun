@@ -32,6 +32,12 @@ export async function POST(request: Request) {
       const autoDeletion = file.auto_delete;
       if (autoDeletion == 'download') {
         await deleteOneDocument(File, { file_id: id });
+        fs.unlink(file_path, (err) => {
+          if (err) {
+            console.error(err)
+            return
+          }
+        })
       }
       
       return NextResponse.json({ fileData: decryptedDataEncoded, file_name: file_name }, { status: 200 });

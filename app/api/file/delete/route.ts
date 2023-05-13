@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { findOneDocument, deleteOneDocument } from "@/utils/dbUtils";
 import { encryptFile } from "@/utils/encryption";
 import File from "@/models/file";
+import fs from "fs";
 
 export async function POST(request: Request) {
   try {
@@ -79,6 +80,12 @@ export async function POST(request: Request) {
           // default action
           await encryptFile(file_path, secret_key, ivBuffer);
           await deleteOneDocument(File, { file_id: id });
+          fs.unlink(file_path, (err) => {
+            if (err) {
+              console.error(err)
+              return
+            }
+          })
           return NextResponse.json({ message: "File deleted successfully" }, { status: 200 });
         }        
       }
