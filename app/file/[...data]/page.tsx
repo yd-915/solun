@@ -189,7 +189,7 @@ function ViewFile({ params }: { params: { data: string[] } }) {
                     Download File
                   </a>
                 </div>
-                <div className="flex justify-center italic items-center mt-4 flex-wrap">
+                <div className="flex flex-col justify-center italic items-center mt-4 flex-wrap">
                   <p id="deletionField" className="text-red-500 text-center mb-4"></p>
                   <button
                     className="bg-blue-500 hover:bg-blue-600 text-white font-semibold text-sm px-4 py-2 rounded transition duration-200 shadow-md ml-2 mt-2"
