@@ -34,7 +34,7 @@ export async function POST(request: Request) {
         }
       }
 
-      await decryptFile(file.raw_file_path, secret_key); // Decryption of the file before sending the link to the user
+      await decryptFile(file.raw_file_path, secret_key, file.iv); // Decryption of the file before sending the link to the user
 
       return NextResponse.json({
         valid: true,
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
   } catch (err) {
     return NextResponse.json({
       valid: false,
-      message: "An error occurred while retrieving the file, please check if the link is correct and try again ",
+      message: "An error occurred while retrieving the file, please check if the link is correct and try again" + err,
     }, {
       status: 500,
     });

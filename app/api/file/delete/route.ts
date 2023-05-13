@@ -23,12 +23,14 @@ export async function POST(request: Request) {
       const file_path = file.raw_file_path;
 
       const deletionMode = file.auto_delete;
+      const ivBuffer = Buffer.from(file.iv, 'hex');
     
       if (deletionMode === 'download'){
         await deleteOneDocument(File, { file_id: id });
         return NextResponse.json({ message: "File deleted successfully" }, { status: 200 });
       } else if (deletionMode === 'never') {
-        await encryptFile(file_path, secret_key);
+        await encryptFile(file_path, secret_key, ivBuffer);
+        
         return NextResponse.json({ message: "Auto Deletion is disabled for this file, it will never be deleted" }, { status: 200 });
       } else {
         const deletionTimes = {
@@ -69,7 +71,8 @@ export async function POST(request: Request) {
             timeString += `${remainingSeconds} seconds`;
           }
           
-          await encryptFile(file_path, secret_key);
+          await encryptFile(file_path, secret_key, ivBuffer);
+          
           return NextResponse.json({ message: "File will be deleted in " + timeString }, { status: 200 });
         } else {
           await deleteOneDocument(File, { file_id: id });

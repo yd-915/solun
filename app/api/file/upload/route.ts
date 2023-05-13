@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/utils/dbConn";
 import generateID from "@/utils/generateId";
 import generateAES from "@/utils/generateAES";
+import generateIV from "@/utils/generateIV";
 import { encrypt, encryptFile } from "@/utils/encryption";
 import File from "@/models/file";
 import crypto from "crypto";
@@ -62,8 +63,9 @@ export async function POST(request: NextRequest) {
         )}.${mime.getExtension(file.type)}`;
         const filePath = `${uploadDir}/${systemFilename}`;
         await writeFile(filePath, buffer);
-
-        await encryptFile(filePath, secret_key as string);
+        
+        const iv = await generateIV();
+        await encryptFile(filePath, secret_key as string, iv as Buffer);
 
         const insertFile = new File({
             file_id: fid,
@@ -74,7 +76,8 @@ export async function POST(request: NextRequest) {
             file_size: file.size,
             auto_delete: autoDeletion,
             secret: dbSecretKey,
-            password: encrypted_password
+            password: encrypted_password,
+            iv: iv.toString('hex'),
         });
 
         await insertFile.save();

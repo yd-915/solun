@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { decryptData } from "@/utils/clientEncryption";
 
 function ViewFile({ params }: { params: { data: string[] } }) {
   const id = params.data[0];
@@ -109,15 +108,14 @@ function ViewFile({ params }: { params: { data: string[] } }) {
       console.error("Error downloading file:", await res.text());
       return;
     }
-
+  
     const result = await res.json();
-    const encryptedFileData = result.fileData as string;
-    const serverSecretKey = result.secretKey;
+    const decryptedFileDataHex = result.fileData;
     const fileName = result.file_name;
 
-    const decryptedFileData = await decryptData(encryptedFileData, serverSecretKey);
-    const blob = new Blob([decryptedFileData]);
-    console.log("Decrypted file data: ", decryptedFileData);
+    const decryptedFileData = Buffer.from(decryptedFileDataHex, 'base64');
+    const arrayBuffer = decryptedFileData.buffer.slice(decryptedFileData.byteOffset, decryptedFileData.byteOffset + decryptedFileData.byteLength);
+    const blob = new Blob([arrayBuffer]);    
   
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -126,10 +124,10 @@ function ViewFile({ params }: { params: { data: string[] } }) {
     link.download = fileName;
     document.body.appendChild(link);
     link.click();
-
+  
     URL.revokeObjectURL(url);
     document.body.removeChild(link);
-  }  
+  }
 
   useEffect(() => {
     checkId(id);
@@ -237,7 +235,7 @@ function ViewFile({ params }: { params: { data: string[] } }) {
         ) : (
           <p id="notFoundField" className="text-white">Checking your link...</p>
         )}
-        {error && <p className="text-red-500 mt-2 text-center">{error}</p>}
+        {error && <p className="text-red-500 mt-2 text-center break-all">{error}</p>}
       </div>
     </div>
   );

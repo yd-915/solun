@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { findOneDocument } from "@/utils/dbUtils";
 import File from "@/models/file";
 import fs from "fs";
+import { decryptFileData } from "@/utils/encryption";
 
 export async function POST(request: Request) {
   try {
@@ -23,14 +24,16 @@ export async function POST(request: Request) {
       const file_path = file.raw_file_path;
       const file_name = file.file_name;
 
-      const fileData = await fs.promises.readFile(file_path);
-      const fileDataEncoded = fileData.toString('hex');
+      const fileData = await fs.promises.readFile(file_path, 'binary');
 
-      return NextResponse.json({ fileData: fileDataEncoded, secretKey: secret_key, file_name: file_name }, { status: 200 });
+      const decryptedData = await decryptFileData(fileData, secret_key, file.iv);
+      const decryptedDataEncoded  = decryptedData.toString("base64");
+
+      return NextResponse.json({ fileData: decryptedDataEncoded, file_name: file_name }, { status: 200 });
     } else {
       return NextResponse.json({ message: "No file found with this ID" }, { status: 404 });
     }
   } catch (err) {
-    return NextResponse.json({ message: "An error occurred while retrieving the file, please check if the link is correct and try again" }, { status: 500 });
+    return NextResponse.json({ message: "An error occurred while retrieving the file, please check if the link is correct and try again" + err }, { status: 500 });
   }
 }
