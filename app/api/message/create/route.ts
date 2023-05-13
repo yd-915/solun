@@ -53,7 +53,7 @@ export async function POST(request: Request) {
         });
     } catch (err) {
         return NextResponse.json({
-            message: "An error occurred while creating the message, please try again: " + err,
+            message: "An error occurred while creating the message, please try again",
         }, {
             status: 500,
         });

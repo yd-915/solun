@@ -1,13 +1,16 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import generateAES from "@/utils/generateAES";
+import generateID from "@/utils/generateId";
 
 
 function CreateMessage() {
   const [bruteforceSafe, setBruteforceSafe] = useState(false);
-  const [exampleLink, setExampleLink] = useState('A7bDg');
+  const [exampleLink, setExampleLink] = useState('');
+  const [endToEndEncryption, setEndToEndEncryption] = useState(false);
 
   const [messageCreated, setMessageCreated] = useState(false);
   const [messageLink, setMessageLink] = useState('');
@@ -17,12 +20,34 @@ function CreateMessage() {
 
   const handleBruteforceToggle = () => {
     setBruteforceSafe(!bruteforceSafe);
-    if (!bruteforceSafe) {
-      setExampleLink('FghsaTG2t1dfjkl4elf85rkFlhiT9wiFmvkkeE751hJFGk518kl5fglvbnxjUkKJGurm845qmF82mF82kLc1m5GGMs');
-    } else {
-      setExampleLink('A7bDg');
-    }
   };
+
+  const handleEndToEndToggle = () => {
+    setEndToEndEncryption(!endToEndEncryption);
+  };
+
+  useEffect(() => {
+    const generateLink = async () => {
+      let link = '';
+
+      if (bruteforceSafe) {
+        const id = await generateID(true);
+        link += id;
+      } else {
+        const id = await generateID(false);
+        link += id;
+      }
+
+      if (endToEndEncryption) {
+        const aesKey = await generateAES();
+        link += `/${aesKey}`;
+      }
+
+      setExampleLink(link);
+    };
+
+    generateLink();
+  }, [bruteforceSafe, endToEndEncryption]);
 
   const handlePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -135,6 +160,7 @@ function CreateMessage() {
                 <input
                   type="checkbox"
                   id="endToEndEncryption"
+                  onChange={handleEndToEndToggle}
                   className="mr-2 w-3.5 h-3.5 text-blue-600 bg-gray-100 border-gray-300 rounded"
                 />
                 <label htmlFor="endToEndEncryption" className="text-white">
