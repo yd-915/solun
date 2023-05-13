@@ -70,7 +70,8 @@ const Services = () => {
         buttonLink: '/file',
         additionalDetails: (
           <div>
-            <p>The file is stored in our system on encrypted disks with government-certified (SED) security for the chosen duration and is immediately removed upon expiration.</p>
+            <p>The file is stored in our system on encrypted disks with government-certified (SED) security for the chosen duration and is immediately removed upon expiration.</p><br/>
+            <p>Each file has a unique AES 32-byte secret key.</p>
           </div>
         ),
       },
@@ -92,7 +93,7 @@ const Services = () => {
     ];  
 
   return (
-    <div className="container mx-auto px-4 py-8 md:py-16" style={{ background: '#11141f' }}>
+    <div id="services" className="container mx-auto px-4 py-8 md:py-16" style={{ background: '#11141f' }}>
       <h2 className="text-4xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-blue-600">Services</h2>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center justify-center">
         {services.map((service, index) => (

@@ -9,6 +9,7 @@ import generateIV from "@/utils/generateIV";
 import { encrypt, encryptFile } from "@/utils/encryption";
 import File from "@/models/file";
 import crypto from "crypto";
+import { extname } from "path";
 
 
 export async function POST(request: NextRequest) {
@@ -56,11 +57,12 @@ export async function POST(request: NextRequest) {
 
     try {
         const uniqueSuffix = `${crypto.randomBytes(64).toString('hex')}`;
-        const systemFilename = `${uniqueSuffix}.${mime.getExtension(file.type)}`;
-        const dbFilename = `${file.name.replace(
-        /\.[^/.]+$/,
-        ""
-        )}.${mime.getExtension(file.type)}`;
+
+        const extension = extname(file.name).slice(1);
+
+        const systemFilename = `${uniqueSuffix}.${extension}`;
+        const dbFilename = file.name;
+
         const filePath = `${uploadDir}/${systemFilename}`;
         await writeFile(filePath, buffer);
         

@@ -24,17 +24,17 @@ const Header = () => {
           <Link href="/file" className="text-gray-300 hover:text-white transition duration-200">Upload File
           </Link>
         </div>
-        <div className="md:hidden">
-          <button onClick={toggleMenu} className="text-gray-300 hover:text-white transition duration-200">
-            <FontAwesomeIcon icon={faBars} />
-          </button>
-        </div>
         <div>
           <button className="border border-blue-500 hover:bg-blue-500 hover:text-white text-blue-500 font-semibold px-4 py-2 rounded-l transition duration-200 mr-2">
             Sign In
           </button>
           <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-r transition duration-200">
             Sign Up
+          </button>
+        </div>
+        <div className="md:hidden">
+          <button onClick={toggleMenu} className="text-gray-300 hover:text-white transition duration-200">
+            <FontAwesomeIcon icon={faBars} />
           </button>
         </div>
       </div>
