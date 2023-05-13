@@ -1,6 +1,6 @@
 import dbConnect from "@/utils/dbConn";
 import { NextResponse } from "next/server";
-import { findOneDocument } from "@/utils/dbUtils";
+import { findOneDocument, deleteOneDocument } from "@/utils/dbUtils";
 import File from "@/models/file";
 import fs from "fs";
 import { decryptFileData } from "@/utils/encryption";
@@ -29,6 +29,11 @@ export async function POST(request: Request) {
       const decryptedData = await decryptFileData(fileData, secret_key, file.iv);
       const decryptedDataEncoded  = decryptedData.toString("base64");
 
+      const autoDeletion = file.auto_delete;
+      if (autoDeletion == 'download') {
+        await deleteOneDocument(File, { file_id: id });
+      }
+      
       return NextResponse.json({ fileData: decryptedDataEncoded, file_name: file_name }, { status: 200 });
     } else {
       return NextResponse.json({ message: "No file found with this ID" }, { status: 404 });

@@ -26,8 +26,9 @@ export async function POST(request: Request) {
       const ivBuffer = Buffer.from(file.iv, 'hex');
     
       if (deletionMode === 'download'){
-        await deleteOneDocument(File, { file_id: id }); // fehler weil datei dann nicht mehr gedownloaded werden kann weil dokument in datenbank nicht mehr existiert
-        return NextResponse.json({ message: "File deleted successfully" }, { status: 200 });
+        // deletion is in the download route
+        await encryptFile(file_path, secret_key, ivBuffer);
+        return NextResponse.json({ message: "File will be deleted after download" }, { status: 200 });
       } else if (deletionMode === 'never') {
         await encryptFile(file_path, secret_key, ivBuffer);
         
@@ -75,6 +76,8 @@ export async function POST(request: Request) {
           
           return NextResponse.json({ message: "File will be deleted in " + timeString }, { status: 200 });
         } else {
+          // default action
+          await encryptFile(file_path, secret_key, ivBuffer);
           await deleteOneDocument(File, { file_id: id });
           return NextResponse.json({ message: "File deleted successfully" }, { status: 200 });
         }        
