@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faCloudUploadAlt, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 import generateAES from "@/utils/generateAES";
 import generateID from "@/utils/generateId";
 
@@ -18,6 +18,7 @@ function UploadFile() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
   const [files, setFiles] = useState<File[]>([]);
+  const [showHelp, setShowHelp] = useState(false);
 
   const handleBruteforceToggle = () => {
     setBruteforceSafe(!bruteforceSafe);
@@ -124,20 +125,39 @@ function UploadFile() {
       <div className="bg-slate-800 p-5 rounded-lg shadow-md w-full max-w-md md:mb-96 mb-40">
         {!uploadCreated ? (
           <>
-            <h1 className="text-2xl font-bold mb-4 text-gray-100">
-              Upload File
-            </h1>
+            <div className="flex justify-between items-center mb-4">
+              <h1 className="text-2xl font-bold text-gray-100">
+                Upload File
+              </h1>
+              <button
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-3 py-1 rounded-full transform transition duration-200 hover:scale-110"
+                onClick={() => setShowHelp(prevState => !prevState)}
+              >
+                <FontAwesomeIcon icon={faQuestionCircle} />
+              </button>
+            </div>
+            {showHelp && (
+              <div className="mb-4">
+                <p className="text-slate-300">
+                  Here you can upload a file to Solun. The file will be encrypted with AES-256 and stored on our servers.
+                </p>
+              </div>
+              )}
             <form onSubmit={handleSubmit}>
               <div className="flex items-center justify-center border-2 border-blue-500 h-64 rounded-2xl mb-4">
-                <input
-                  type="file"
-                  name="files"
-                  id="files"
-                  accept="*"
-                  className="absolute opacity-0 h-64 w-full max-w-sm cursor-pointer"
-                  onChange={handleFileChange}
-                />
-                <FontAwesomeIcon icon={faCloudUploadAlt} size="6x" color="#3B82F6" />
+                  <input
+                    type="file"
+                    name="files"
+                    id="files"
+                    accept="*"
+                    className="absolute opacity-0 h-64 w-full max-w-sm cursor-pointer"
+                    onChange={handleFileChange}
+                  />
+                <div className="flex flex-col items-center justify-center">
+                  <FontAwesomeIcon icon={faCloudUploadAlt} size="6x" color="#3B82F6" />
+                  <p className="text-slate-300">Drag and drop your file here or click to browse</p>
+                  <p className="text-slate-400 text-sm">Max file size: 2.5GB</p>
+                </div>
               </div>
               {files.length > 0 && (
                 <div className="mt-4">
@@ -148,32 +168,41 @@ function UploadFile() {
                   <span className="text-slate-400">Size: {(files[0].size / 1000000).toFixed(2)} MB</span>
                 </div>
               )}
-              <div className="flex justify-between items-center mt-4">
-                <div className="relative flex items-center">
-                  <input
-                    type={passwordVisible ? "text" : "password"}
-                    id="password"
-                    name="password"
-                    className="bg-slate-950 text-white rounded-lg block p-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:shadow-md focus:shadow-blue-700 transition duration-200"
-                    placeholder="Optional Password"
-                    minLength={1}
-                    onChange={handlePasswordChange}
-                  />
-                  {password.length > 0 && (
-                  <div className="h-6 w-6 text-slate-300 absolute right-2">
-                    <FontAwesomeIcon id="pwd-icon" icon={passwordVisible ? faEye : faEyeSlash}
-                    onClick={handlePasswordVisibility}
-                    />
+              <div className="flex justify-between items-start mt-4">
+                <div className="flex flex-col">
+                    <div className="relative flex items-center mb-2">
+                      <input
+                        type={passwordVisible ? "text" : "password"}
+                        id="password"
+                        name="password"
+                        className="bg-slate-950 text-white rounded-lg block p-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:shadow-md focus:shadow-blue-700 transition duration-200"
+                        placeholder="Optional Password"
+                        minLength={1}
+                        onChange={handlePasswordChange}
+                      />
+                      {password.length > 0 && (
+                      <div className="h-6 w-6 text-slate-300 absolute right-2">
+                        <FontAwesomeIcon id="pwd-icon" icon={passwordVisible ? faEye : faEyeSlash}
+                        onClick={handlePasswordVisibility}
+                        />
+                      </div>
+                      )}
+                    </div>
+                    {showHelp && (
+                    <div className="mb-4">
+                      <p className="text-slate-300 w-56 text-sm">
+                        You can optionally set a password for your file.
+                      </p>
+                    </div>
+                    )}
                   </div>
-                  )}
-                </div>
-                <button
-                  type="submit"
-                  id="submit"
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded transition duration-200 shadow-md ml-2"
-                >
-                  {!uploadCreated ? 'Start Upload' : `Uploading...`}
-                </button>
+                  <button
+                    type="submit"
+                    id="submit"
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded transition duration-200 shadow-md ml-2"
+                  >
+                    {!uploadCreated ? 'Start Upload' : `Uploading...`}
+                  </button>
               </div>
               <div className="flex items-center mt-4">
                 <input
@@ -186,6 +215,13 @@ function UploadFile() {
                   Bruteforce Safe (90 Chars)
                 </label>
               </div>
+              {showHelp && (
+                <div className="mb-4">
+                  <p className="text-slate-300 text-sm">
+                    This option allows you to create a file link that is 90 characters long. This makes it impossible to bruteforce the link.
+                  </p>
+                </div>
+              )}
               <div className="flex items-center mt-4">
                 <input
                   type="checkbox"
@@ -197,6 +233,13 @@ function UploadFile() {
                   End-to-End Encryption
                 </label>
               </div>
+              {showHelp && (
+                <div className="mb-4">
+                  <p className="text-slate-300 text-sm">
+                    This option enables end-to-end encryption, which means we don't store the secret key which is used to encrypt your file. This means that we cannot decrypt your file.
+                  </p>
+                </div>
+              )}
               <div className="flex flex-col mt-4">
                 <div className="relative">
                   <select
@@ -216,6 +259,13 @@ function UploadFile() {
                     <option value="never">Never</option>
                   </select>
                 </div>
+                {showHelp && (
+                <div className="mb-4">
+                  <p className="text-slate-300 text-sm">
+                    This option allows you to set an auto deletion time for your file. After the file has been downloaded or the time has passed, the file will be deleted from our servers.
+                  </p>
+                </div>
+              )}
               </div>
               <div className="mt-4">
                 <span className="text-slate-300">Example Link:</span>
@@ -228,13 +278,35 @@ function UploadFile() {
                   {exampleLink}
                 </a>
               </div>
+              {showHelp && (
+                <div className="mb-4">
+                  <p className="text-slate-300 text-sm">
+                    With this example link you can see how your file link will look like. (This is not a real link)
+                  </p>
+                </div>
+              )}
             </form>
           </>
         ) : (
           <>
-            <h1 className="text-2xl font-bold mb-4 text-gray-100">
-              Your File has been uploaded
-            </h1>
+          <div className="flex justify-between items-center mb-4">
+              <h1 className="text-2xl font-bold text-gray-100">
+                Your File has been uploaded!
+              </h1>
+              <button
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-3 py-1 rounded-full transform transition duration-200 hover:scale-110"
+                onClick={() => setShowHelp(prevState => !prevState)}
+              >
+                <FontAwesomeIcon icon={faQuestionCircle} />
+              </button>
+            </div>
+            {showHelp && (
+              <div className="mb-4">
+                <p className="text-slate-300">
+                  Your file has been uploaded to Solun. You can now share the link with your friends. <br/><br/> (The file will be deleted after the first download or after the auto deletion time has passed)
+                </p>
+              </div>
+              )}
             <div className="mb-4">
               <input
                 type="text"

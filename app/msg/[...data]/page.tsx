@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 function ViewMessage({ params }: { params: { data: string[] } }) {
+
   const id = params.data[0];
   const secret = params.data[1];
 
