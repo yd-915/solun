@@ -104,6 +104,7 @@ function CreateMessage() {
     };
 
   return (
+    <>
     <div className="flex items-center justify-center py-8 px-2 md:min-h-screen">
       <div className="bg-slate-800 p-5 rounded-lg shadow-md w-full max-w-md md:mb-96 mb-40">
         {!messageCreated ? (
@@ -275,6 +276,7 @@ function CreateMessage() {
         )}
       </div>
     </div>
+    </>
   );
 }
 
