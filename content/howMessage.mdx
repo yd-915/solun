@@ -1,1 +1,22 @@
-### Yo
+## **Secure Messaging**
+
+Solun’s secure messaging service ensures your communications are private and secure. Here's a straightforward look at how we handle your messages:
+
+### **Encryption:**
+When you send a message, we employ the '**aes-256-cbc**' encryption technique to protect your data.
+This method uses a unique '**key**' to transform your message into an unreadable format.
+This key is generated through a secure process, and we also use a random '**Initialization Vector (IV)**' to ensure each message's encryption is distinct.
+
+### **Transmission:**
+After encrypting, your message is securely transmitted over the internet. Even if intercepted, your message remains unreadable due to the strong encryption.
+
+### **Decryption:**
+When your message is received, we use the original '**key**' and '**IV**' to decrypt it. This process converts the encrypted data back into its original, readable form.
+
+### **Secure Deletion:**
+Messages in Solun are not stored indefinitely.
+After a message has been seen, we securely delete it.
+This process is thorough and **irreversible**, ensuring that old messages cannot be recovered.
+
+Whether you're sharing sensitive information or having a casual conversation, Solun's advanced encryption and secure deletion methods ensure your privacy.
+We believe that secure communication is a cornerstone of digital safety, and Solun is committed to providing you with a messaging service that respects and protects your privacy.
