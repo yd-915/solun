@@ -3,13 +3,19 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faFile, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const ServiceCard = ({ icon, title, description, buttonText, additionalDetails, buttonLink } : any) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const toggleDetails = () => {
     setShowDetails(!showDetails);
+  };
+
+  const router = useRouter();
+
+  const goToService = (link: string) => {
+    router.push(link);
   };
 
   return (
@@ -33,9 +39,7 @@ const ServiceCard = ({ icon, title, description, buttonText, additionalDetails, 
         </button>
           <button
             className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded transition duration-200 shadow-md ml-2"
-            onClick={() => {
-              location.href = buttonLink;
-            }}
+            onClick={() => goToService(buttonLink)}
           >
             {buttonText}
           </button>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 function ViewMessage({ params }: { params: { data: string[] } }) {
 
@@ -14,6 +15,11 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
   const [showMessage, setShowMessage] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const router = useRouter();
+  const createNewMessage = () => {
+    router.push("/msg");
+  };
 
   async function checkId(id: string) {
     const data = {
@@ -140,9 +146,7 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
               <p id="deletionField" className="text-red-500 text-center mb-4"></p>
               <button
                 className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded transition duration-200 shadow-md ml-2 mt-2"
-                onClick={() => {
-                  location.href = "/msg";
-                }}
+                onClick={() => createNewMessage()}
               >
                 Create New Message
               </button>

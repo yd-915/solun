@@ -1,8 +1,16 @@
+"use client";
+
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { useRouter } from 'next/navigation';
 
 const Welcomer = () => {
+  
+  const router = useRouter();
+
+  const goToAbout = () => {
+    router.push("/about");
+  };
+
   return (
     <div className="bg-gray-950">
         <div className="container mx-auto px-4 py-8 md:py-16 h-full flex items-center justify-center">
@@ -14,7 +22,7 @@ const Welcomer = () => {
             </p>
             <div className="flex justify-center md:justify-start">
                 <button className="bg-blue-400 text-white font-semibold px-6 py-3 rounded mr-4 hover:bg-blue-500 transition duration-200">Get Started</button>
-                <button className="bg-transparent border-2 border-white text-white font-semibold px-6 py-3 rounded hover:bg-blue-400 hover:border-blue-400 transition duration-200">Learn More</button>
+                <button onClick={goToAbout} className="bg-transparent border-2 border-white text-white font-semibold px-6 py-3 rounded hover:bg-blue-400 hover:border-blue-400 transition duration-200">Learn More</button>
             </div>
             </div>
 
