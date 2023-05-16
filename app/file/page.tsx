@@ -6,6 +6,7 @@ import { faEye, faEyeSlash, faCloudUploadAlt, faQuestionCircle, faLink } from '@
 import generateAES from "@/utils/generateAES";
 import generateID from "@/utils/generateId";
 import Link from 'next/link';
+import { encryptTransfer } from '@/utils/clientEncryption';
 
 function UploadFile() {
   const [bruteforceSafe, setBruteforceSafe] = useState(false);
@@ -89,11 +90,17 @@ function UploadFile() {
     const password = target.password.value;
     const endToEndEncryption = target.endToEndEncryption.checked;
 
+    let tmpEncryptPwd = '';
+    if(password !== '') {
+      tmpEncryptPwd = await encryptTransfer(password);
+    }
+
+
     if (files.length > 0) {
       const formData = new FormData();
       formData.append('file', files[0]);
       formData.append('bruteforceSafe', bruteforceSafe.toString());
-      formData.append('password', password);
+      formData.append('password', tmpEncryptPwd);
       formData.append('endToEndEncryption', endToEndEncryption.toString());
       formData.append('autoDeletion', target.autoDeletion.value);
       
@@ -111,7 +118,6 @@ function UploadFile() {
           alert(data.message);
         }
       } catch (err) {
-        console.log(err);
         alert('An error occurred while uploading the file.');
       }
     }

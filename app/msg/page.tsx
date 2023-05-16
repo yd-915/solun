@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash, faQuestionCircle, faLink } from '@fortawesome/free-solid-svg-icons'
+import { encryptTransfer } from '@/utils/clientEncryption';
 import generateAES from "@/utils/generateAES";
 import generateID from "@/utils/generateId";
 import Link from 'next/link';
@@ -79,10 +80,17 @@ function CreateMessage() {
           const bruteforceSafe = target.bruteforceSafe.checked;
           const password = target.password.value;
           const endToEndEncryption = target.endToEndEncryption.checked;
+
+          const tmpEncryptMsg = await encryptTransfer(message);
+          let tmpEncryptPwd = '';
+          if(password !== '') {
+            tmpEncryptPwd = await encryptTransfer(password);
+          }
+
           const data = {
-            message,
+            tmpEncryptMsg,
             bruteforceSafe,
-            password,
+            tmpEncryptPwd,
             endToEndEncryption
           };
             const res = await fetch('/api/message/create', {
