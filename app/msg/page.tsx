@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faQuestionCircle, faLink } from '@fortawesome/free-solid-svg-icons'
 import generateAES from "@/utils/generateAES";
 import generateID from "@/utils/generateId";
-
+import Link from 'next/link';
 
 function CreateMessage() {
   const [bruteforceSafe, setBruteforceSafe] = useState(false);
@@ -228,6 +228,9 @@ function CreateMessage() {
                   </p>
                 </div>
               )}
+              <Link href="how-message" className="text-center text-blue-500 text-sm block mt-4">
+                <FontAwesomeIcon icon={faLink} /> Learn More
+              </Link>
             </form>
           </>
         ) : (

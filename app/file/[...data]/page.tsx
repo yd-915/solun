@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 function ViewFile({ params }: { params: { data: string[] } }) {
   const id = params.data[0];
@@ -17,6 +18,11 @@ function ViewFile({ params }: { params: { data: string[] } }) {
   const [showFile, setShowFile] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const router = useRouter();
+  const uploadNewFile = () => {
+    router.push("/file");
+  };
 
   async function checkId(id: string) {
     const data = {
@@ -202,9 +208,7 @@ function ViewFile({ params }: { params: { data: string[] } }) {
                   <p id="deletionField" className="text-red-500 text-center mb-4"></p>
                   <button
                     className="bg-blue-500 hover:bg-blue-600 text-white font-semibold text-sm px-4 py-2 rounded transition duration-200 shadow-md ml-2 mt-2"
-                    onClick={() => {
-                      location.href = "/file";
-                    }}
+                    onClick={() => uploadNewFile()}
                   >
                     Upload another file
                   </button>

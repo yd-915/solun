@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash, faCloudUploadAlt, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faCloudUploadAlt, faQuestionCircle, faLink } from '@fortawesome/free-solid-svg-icons'
 import generateAES from "@/utils/generateAES";
 import generateID from "@/utils/generateId";
-
+import Link from 'next/link';
 
 function UploadFile() {
   const [bruteforceSafe, setBruteforceSafe] = useState(false);
@@ -286,6 +286,9 @@ function UploadFile() {
                   </p>
                 </div>
               )}
+              <Link href="how-file" className="text-center text-blue-500 text-sm block mt-4">
+                <FontAwesomeIcon icon={faLink} /> Learn More
+              </Link>
             </form>
           </>
         ) : (
