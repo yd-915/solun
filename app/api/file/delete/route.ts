@@ -82,8 +82,7 @@ export async function POST(request: Request) {
           await deleteOneDocument(File, { file_id: id });
           fs.unlink(file_path, (err) => {
             if (err) {
-              console.error(err)
-              return
+              return NextResponse.json({ message: "An error occurred while deleting the file, please try again"}, { status: 500 });
             }
           })
           return NextResponse.json({ message: "File deleted successfully" }, { status: 200 });

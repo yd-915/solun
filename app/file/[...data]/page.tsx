@@ -114,7 +114,6 @@ function ViewFile({ params }: { params: { data: string[] } }) {
       body: JSON.stringify(data),
     });
     if (!res.ok) {
-      //console.error("Error downloading file:", await res.text());
       downloadButton.disabled = false;
       downloadButton.innerHTML = "Download File";
       return;

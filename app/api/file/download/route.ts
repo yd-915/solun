@@ -34,8 +34,7 @@ export async function POST(request: Request) {
         await deleteOneDocument(File, { file_id: id });
         fs.unlink(file_path, (err) => {
           if (err) {
-            console.error(err)
-            return
+            return NextResponse.json({ message: "An error occurred while deleting the file, please try again"}, { status: 500 });
           }
         })
       }
@@ -45,6 +44,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "No file found with this ID" }, { status: 404 });
     }
   } catch (err) {
-    return NextResponse.json({ message: "An error occurred while retrieving the file, please check if the link is correct and try again" + err }, { status: 500 });
+    return NextResponse.json({ message: "An error occurred while retrieving the file, please check if the link is correct and try again" }, { status: 500 });
   }
 }
