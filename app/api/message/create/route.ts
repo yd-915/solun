@@ -2,6 +2,7 @@ import dbConnect from "@/utils/dbConn";
 import generateID from "@/utils/generateId";
 import generateAES from "@/utils/generateAES";
 import { encrypt } from "@/utils/encryption";
+import { decryptTransfer } from "@/utils/clientEncryption";
 import Message from "@/models/message";
 import { NextResponse } from "next/server";
 
@@ -11,11 +12,16 @@ export async function POST(request: Request) {
 
         await dbConnect();
 
-        let message_text = res.message;
+        let message_text = res.tmpEncryptMsg;
         let bruteforceSafe = res.bruteforceSafe;
-        let password = res.password;
+        let password = res.tmpEncryptPwd;
         let endToEndEncryption = res.endToEndEncryption;
 
+        message_text = await decryptTransfer(message_text);
+
+        if (password !== '') {
+            password = await decryptTransfer(password);
+        }
 
         if (!message_text) {
             return NextResponse.json({ message: "Please enter a message" }, { status: 400 });

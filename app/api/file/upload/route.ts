@@ -7,6 +7,7 @@ import generateID from "@/utils/generateId";
 import generateAES from "@/utils/generateAES";
 import generateIV from "@/utils/generateIV";
 import { encrypt, encryptFile } from "@/utils/encryption";
+import { decryptTransfer } from "@/utils/clientEncryption";
 import File from "@/models/file";
 import crypto from "crypto";
 import { extname } from "path";
@@ -21,6 +22,10 @@ export async function POST(request: NextRequest) {
     let password = formData.get("password") as string;
     let endToEndEncryption = formData.get("endToEndEncryption") === "true";    
     let autoDeletion = formData.get("autoDeletion");
+
+    if (password !== '') {
+        password = await decryptTransfer(password);
+    }
 
     const file = formData.get("file") as Blob | null;
     if (!file) {
