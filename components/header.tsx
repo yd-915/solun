@@ -24,7 +24,7 @@ const Header = () => {
           <Link href="/file" className="text-gray-300 hover:text-white transition duration-200">Upload File
           </Link>
         </div>
-        <div>
+        <div className="hidden md:flex">
           <button className="border border-blue-500 hover:bg-blue-500 hover:text-white text-blue-500 font-semibold px-4 py-2 rounded-l transition duration-200 mr-2">
             Sign In
           </button>
@@ -45,6 +45,12 @@ const Header = () => {
             </Link>
             <Link href="/file" className="text-gray-300 hover:text-white transition duration-200 block" onClick={toggleMenu}>Upload File
             </Link>
+            <button className="border border-blue-500 hover:bg-blue-500 hover:text-white text-blue-500 font-semibold px-4 py-2 rounded-l transition duration-200 mr-2">
+              Sign In
+            </button>
+            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-r transition duration-200">
+              Sign Up
+            </button>
           </nav>
         </div>
       )}
