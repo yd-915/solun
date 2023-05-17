@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash, faQuestionCircle, faLink } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faQuestionCircle, faLink, faRefresh } from '@fortawesome/free-solid-svg-icons'
 import { encryptTransfer } from '@/utils/clientEncryption';
 import generateAES from "@/utils/generateAES";
 import generateID from "@/utils/generateId";
+import generatePassword from '@/utils/generatePassword';
 import Link from 'next/link';
 
 function CreateMessage() {
@@ -55,9 +56,16 @@ function CreateMessage() {
     setPasswordVisible(!passwordVisible);
   };
 
-    const handlePasswordChange = (event : any) => {
-      setPassword(event.target.value);
-    }; 
+  const handlePasswordChange = (event : any) => {
+    setPassword(event.target.value);
+  }; 
+
+  const handlePasswordGenerator = () => {
+    const generatedPassword = generatePassword(12);
+    const field = document.getElementById('password') as HTMLInputElement;
+    field.value = generatedPassword;
+    handlePasswordChange({target: {value: generatedPassword}});
+  };
 
     const handleSubmit = async (e: React.FormEvent) => {
           e.preventDefault();
@@ -153,18 +161,23 @@ function CreateMessage() {
                       type={passwordVisible ? "text" : "password"}
                       id="password"
                       name="password"
-                      className="bg-slate-950 text-white rounded-lg block p-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:shadow-md focus:shadow-blue-700 transition duration-200"
+                      className="bg-slate-950 text-white rounded-lg block p-3 pe-16 w-60 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:shadow-md focus:shadow-blue-700 transition duration-200"
                       placeholder="Optional Password"
                       minLength={1}
                       onChange={handlePasswordChange}
                     />
                     {password.length > 0 && (
-                    <div className="h-6 w-6 text-slate-300 absolute right-2">
-                      <FontAwesomeIcon id="pwd-icon" icon={passwordVisible ? faEye : faEyeSlash}
-                      onClick={handlePasswordVisibility}
+                      <div className="h-6 w-6 text-slate-300 absolute right-8 cursor-pointer hover:text-blue-500">
+                        <FontAwesomeIcon id="pwd-icon" icon={passwordVisible ? faEye : faEyeSlash}
+                        onClick={handlePasswordVisibility}
+                        />
+                      </div>
+                    )}
+                    <div className="h-6 w-6 text-slate-300 absolute right-2 cursor-pointer hover:text-blue-500">
+                      <FontAwesomeIcon icon={faRefresh} 
+                      onClick={handlePasswordGenerator}
                       />
                     </div>
-                    )}
                   </div>
                   {showHelp && (
                   <div className="mb-4">
@@ -179,7 +192,7 @@ function CreateMessage() {
                   id="submit"
                   className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded transition duration-200 shadow-md ml-2"
                 >
-                  Create Message
+                  Create
                 </button>
               </div>
               <div className="flex items-center mt-4">
