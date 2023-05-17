@@ -190,7 +190,7 @@ function UploadFile() {
                         type={passwordVisible ? "text" : "password"}
                         id="password"
                         name="password"
-                        className="bg-slate-950 text-white rounded-lg block p-3 pe-16 w-52 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:shadow-md focus:shadow-blue-700 transition duration-200"
+                        className="bg-slate-950 text-white rounded-lg block p-3 pe-16 w-60 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:shadow-md focus:shadow-blue-700 transition duration-200"
                         placeholder="Optional Password"
                         minLength={1}
                         onChange={handlePasswordChange}

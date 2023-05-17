@@ -161,7 +161,7 @@ function CreateMessage() {
                       type={passwordVisible ? "text" : "password"}
                       id="password"
                       name="password"
-                      className="bg-slate-950 text-white rounded-lg block p-3 pe-16 w-52 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:shadow-md focus:shadow-blue-700 transition duration-200"
+                      className="bg-slate-950 text-white rounded-lg block p-3 pe-16 w-60 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 focus:shadow-md focus:shadow-blue-700 transition duration-200"
                       placeholder="Optional Password"
                       minLength={1}
                       onChange={handlePasswordChange}
@@ -192,7 +192,7 @@ function CreateMessage() {
                   id="submit"
                   className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded transition duration-200 shadow-md ml-2"
                 >
-                  Create Message
+                  Create
                 </button>
               </div>
               <div className="flex items-center mt-4">
