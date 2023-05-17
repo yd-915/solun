@@ -20,6 +20,8 @@ function CreateMessage() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
   const [showHelp, setShowHelp] = useState(false);
+  const [securityIndicator, setSecurityIndicator] = useState("Not Secure");
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const handleBruteforceToggle = () => {
     setBruteforceSafe(!bruteforceSafe);
@@ -51,6 +53,16 @@ function CreateMessage() {
 
     generateLink();
   }, [bruteforceSafe, endToEndEncryption]);
+
+  useEffect(() => {
+    if (endToEndEncryption) {
+      setSecurityIndicator("Secure");
+    } else if (bruteforceSafe || password !== "") {
+      setSecurityIndicator("Okay");
+    } else {
+      setSecurityIndicator("Not Secure");
+    }
+  }, [bruteforceSafe, endToEndEncryption, password]);
 
   const handlePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -129,12 +141,33 @@ function CreateMessage() {
               <h1 className="text-2xl font-bold text-gray-100">
                 New Message
               </h1>
+              <div className="flex items-center">
+                <button
+                  className={`text-white font-bold px-3 py-1 rounded-full transform transition duration-200 hover:scale-105 ml-auto ${
+                            securityIndicator === "Not Secure"
+                              ? "bg-red-500 hover:bg-red-600"
+                              : securityIndicator === "Okay"
+                              ? "bg-yellow-500 hover:bg-yellow-600"
+                              : "bg-green-500 hover:bg-green-600"
+                            }`
+                          }
+                        onMouseEnter={() => setShowTooltip(true)}
+                        onMouseLeave={() => setShowTooltip(false)}
+                >                
+                {securityIndicator}
+                {showTooltip && 
+                  <div className="absolute w-64 top-full left-1/2 transform -translate-x-1/2 bg-black text-white p-2 text-md rounded-md shadow-lg mt-2">
+                    The Security Indicator provides real-time updates on your chosen security settings.
+                  </div>
+                }
+              </button>
               <button
-                className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-3 py-1 rounded-full transform transition duration-200 hover:scale-110"
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-3 py-1 rounded-full transform transition duration-200 hover:scale-110 ml-3"
                 onClick={() => setShowHelp(prevState => !prevState)}
               >
                 <FontAwesomeIcon icon={faQuestionCircle} />
               </button>
+              </div>
             </div>
             {showHelp && (
               <div className="mb-4">
