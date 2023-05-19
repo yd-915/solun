@@ -8,6 +8,7 @@ import generateID from "@/utils/generateId";
 import generatePassword from '@/utils/generatePassword';
 import Link from 'next/link';
 import { encryptTransfer } from '@/utils/clientEncryption';
+import axios from 'axios';
 
 function UploadFile() {
   const [bruteforceSafe, setBruteforceSafe] = useState(false);
@@ -23,6 +24,9 @@ function UploadFile() {
   const [showHelp, setShowHelp] = useState(false);
   const [securityIndicator, setSecurityIndicator] = useState("Not Secure");
   const [showTooltip, setShowTooltip] = useState(false);
+
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadPercentage, setUploadPercentage] = useState(0);
 
   const handleBruteforceToggle = () => {
     setBruteforceSafe(!bruteforceSafe);
@@ -102,9 +106,7 @@ function UploadFile() {
       autoDeletion: { value: string };
     };
 
-    const submitButton = document.getElementById('submit') as HTMLButtonElement;
-    submitButton.disabled = true;
-    submitButton.innerHTML = '<div class="flex items-center"><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span class="text-white">Uploading</span></div>';
+    setIsUploading(true);
 
     const bruteforceSafe = target.bruteforceSafe.checked;
     const password = target.password.value;
@@ -123,15 +125,20 @@ function UploadFile() {
       formData.append('password', tmpEncryptPwd);
       formData.append('endToEndEncryption', endToEndEncryption.toString());
       formData.append('autoDeletion', target.autoDeletion.value);
+
+      const config = {
+        onUploadProgress: function(progressEvent: ProgressEvent) {
+          var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setUploadPercentage(percentCompleted);
+        }
+      };
       
       try {
-        const response = await fetch('/api/file/upload', {
-          method: 'POST',
-          body: formData,
-        });
+        // @ts-ignore Config is not assignable to type AxiosRequestConfig
+        const response = await axios.post('/api/file/upload', formData, config);
         
-        const data = await response.json();
-        if (response.ok) {
+        const data = await response.data;
+        if (response.status === 200) {
           setUploadLink(data.link);
           setUploadCreated(true);
         } else {
@@ -141,8 +148,7 @@ function UploadFile() {
         alert('An error occurred while uploading the file.');
       }
     }
-    submitButton.disabled = false;
-    submitButton.innerHTML = 'Start Upload';
+    setIsUploading(false);
   };
 
 
@@ -250,11 +256,21 @@ function UploadFile() {
                     )}
                   </div>
                   <button
-                    type="submit"
                     id="submit"
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded transition duration-200 shadow-md ml-2"
+                    disabled={isUploading}
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 py-3 rounded transition duration-200"
                   >
-                    {!uploadCreated ? 'Start Upload' : `Uploading...`}
+                    {isUploading ? (
+                      <div className="flex items-center">
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span className="text-white">{uploadPercentage}%</span>
+                      </div>
+                    ) : (
+                      'Start Upload'
+                    )}
                   </button>
               </div>
               <div className="flex items-center mt-4">
