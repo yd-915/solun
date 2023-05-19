@@ -44,6 +44,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "No file found with this ID" }, { status: 404 });
     }
   } catch (err) {
+    console.log(err);
     return NextResponse.json({ message: "An error occurred while retrieving the file, please check if the link is correct and try again" }, { status: 500 });
   }
 }
