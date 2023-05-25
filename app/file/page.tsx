@@ -217,7 +217,7 @@ function UploadFile() {
                 <div className="mt-4">
                   <span className="text-slate-300">Selected File:</span>
                   <br />
-                  <span className="text-slate-400">Name: {files[0].name}</span>
+                  <span className="text-slate-400 break-all">Name: {files[0].name}</span>
                   <br />
                   <span className="text-slate-400">Size: {(files[0].size / 1000000).toFixed(2)} MB</span>
                 </div>

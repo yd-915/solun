@@ -46,10 +46,11 @@ function ViewFile({ params }: { params: { data: string[] } }) {
     }
   }
 
-  async function deleteMessage(id: string, secretKey: string) {
+  async function deleteFile(id: string, secretKey: string, forceDeleteOn1Download: boolean) {
     const data = {
       id,
       secret: secretKey,
+      forceDeleteOn1Download,
     };
     const res = await fetch("/api/file/delete", {
       method: "POST",
@@ -92,19 +93,21 @@ function ViewFile({ params }: { params: { data: string[] } }) {
       setFileType(result.type);
       setShowFile(true);
 
-      await deleteMessage(id, secretKey);
+      await deleteFile(id, secretKey, false);
     }
     setLoading(false);
   }
 
-
-  async function handleDownloadFile(id: string, secretKey: string) {
-    const downloadButton = document.getElementById("downloadButton") as HTMLButtonElement;
+  async function handleDownloadFile(id: string, secret: string) {
+    const downloadButton = document.getElementById(
+      "downloadButton"
+    ) as HTMLButtonElement;
     downloadButton.disabled = true;
-    downloadButton.innerHTML = '<div class="flex items-center"><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span class="text-white">Downloading</span></div>';
+    downloadButton.innerHTML =
+      '<div class="flex items-center"><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span class="text-white">Downloading</span></div>';
     const data = {
       id,
-      secret: secretKey,
+      secret,
     };
     const res = await fetch("/api/file/download", {
       method: "POST",
@@ -113,31 +116,34 @@ function ViewFile({ params }: { params: { data: string[] } }) {
       },
       body: JSON.stringify(data),
     });
+
     if (!res.ok) {
       downloadButton.disabled = false;
       downloadButton.innerHTML = "Download File";
       return;
     }
-  
-    const result = await res.json();
-    const decryptedFileDataHex = result.fileData;
-    const fileName = result.file_name;
 
-    const decryptedFileData = Buffer.from(decryptedFileDataHex, 'base64');
-    const arrayBuffer = decryptedFileData.buffer.slice(decryptedFileData.byteOffset, decryptedFileData.byteOffset + decryptedFileData.byteLength);
-    const blob = new Blob([arrayBuffer]);    
-  
+    const blob = await res.blob();
+    console.log(blob);
+    const fileName =
+      res.headers
+        .get("Content-Disposition")
+        ?.split("filename=")[1]
+        .replace(/"/g, "") || "file";
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    console.log("FILE", res);
+    const link = document.createElement("a");
     link.href = url;
-  
     link.download = fileName;
+
     document.body.appendChild(link);
     link.click();
-  
+
     URL.revokeObjectURL(url);
     document.body.removeChild(link);
-    
+
+    await deleteFile(id, secret, true);
+
     downloadButton.disabled = false;
     downloadButton.innerHTML = "Download File";
   }
@@ -184,35 +190,44 @@ function ViewFile({ params }: { params: { data: string[] } }) {
         {fileExists ? (
           showFile ? (
             <div>
-                <h1 className="text-2xl font-bold mb-4 text-gray-100">
-                  Your File
-                </h1>
-                <div className="p-4 mb-4 text-white rounded-lg bg-gradient-to-r from-blue-600 to-blue-800">
-                  <p className="mb-2"><strong>Filename:</strong> {fileName}</p>
-                  <p className="mb-2"><strong>Filesize:</strong> {fileSize}</p>
-                  <p className="mb-2"><strong>Filetype:</strong> {fileType}</p>
-                </div>
-                <div className="flex justify-center">
-                  <a
-                    id="downloadButton"
-                    onClick={() => {
-                      handleDownloadFile(id, secret);
-                    }}
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-semibold text-lg px-8 py-4 rounded transition duration-200 shadow-lg inline-block text-center cursor-pointer"
-                  >
-                    Download File
-                  </a>
-                </div>
-                <div className="flex flex-col justify-center italic items-center mt-4 flex-wrap">
-                  <p id="deletionField" className="text-red-500 text-center mb-4"></p>
-                  <button
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-semibold text-sm px-4 py-2 rounded transition duration-200 shadow-md ml-2 mt-2"
-                    onClick={() => uploadNewFile()}
-                  >
-                    Upload another file
-                  </button>
-                </div>
-              </div>          
+              <h1 className="text-2xl font-bold mb-4 text-gray-100">
+                Your File
+              </h1>
+              <div className="p-4 mb-4 text-white rounded-lg bg-gradient-to-r from-blue-600 to-blue-800">
+                <p className="mb-2 break-all">
+                  <strong>Filename:</strong> {fileName}
+                </p>
+                <p className="mb-2">
+                  <strong>Filesize:</strong> {fileSize}
+                </p>
+                <p className="mb-2 break-all">
+                  <strong>Filetype:</strong> {fileType}
+                </p>
+              </div>
+              <div className="flex justify-center">
+                <a
+                  id="downloadButton"
+                  onClick={() => {
+                    handleDownloadFile(id, secret);
+                  }}
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-semibold text-lg px-8 py-4 rounded transition duration-200 shadow-lg inline-block text-center cursor-pointer"
+                >
+                  Download File
+                </a>
+              </div>
+              <div className="flex flex-col justify-center italic items-center mt-4 flex-wrap">
+                <p
+                  id="deletionField"
+                  className="text-red-500 text-center mb-4"
+                ></p>
+                <button
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-semibold text-sm px-4 py-2 rounded transition duration-200 shadow-md ml-2 mt-2"
+                  onClick={() => uploadNewFile()}
+                >
+                  Upload another file
+                </button>
+              </div>
+            </div>
           ) : passwordProtected ? (
             <div className="flex items-center justify-center flex-wrap flex-col">
               <h1 className="text-2xl font-bold mb-4 text-gray-100">
@@ -245,9 +260,13 @@ function ViewFile({ params }: { params: { data: string[] } }) {
             </div>
           )
         ) : (
-          <p id="notFoundField" className="text-white">Checking your link...</p>
+          <p id="notFoundField" className="text-white">
+            Checking your link...
+          </p>
         )}
-        {error && <p className="text-red-500 mt-2 text-center break-all">{error}</p>}
+        {error && (
+          <p className="text-red-500 mt-2 text-center break-all">{error}</p>
+        )}
       </div>
     </div>
   );

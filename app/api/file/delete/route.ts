@@ -12,6 +12,7 @@ export async function POST(request: Request) {
     await dbConnect();
     let id = res.id;
     let secret_key = res.secret || null;
+    let forceDeleteOn1Download = res.forceDeleteOn1Download;
 
     if (!id) {
       return NextResponse.json({ message: "No file ID provided" }, { status: 400 });
@@ -27,8 +28,17 @@ export async function POST(request: Request) {
       const ivBuffer = Buffer.from(file.iv, 'hex');
     
       if (deletionMode === 'download'){
-        // deletion is in the download route
-        await encryptFile(file_path, secret_key, ivBuffer);
+        if(forceDeleteOn1Download){
+          fs.unlink(file_path, (err) => {
+            if (err) {
+              console.error(err);
+              return;
+            }
+          });
+          await deleteOneDocument(File, { file_id: id });
+        } else {
+          await encryptFile(file_path, secret_key, ivBuffer);
+        }
         return NextResponse.json({ message: "File will be deleted after download" }, { status: 200 });
       } else if (deletionMode === 'never') {
         await encryptFile(file_path, secret_key, ivBuffer);
