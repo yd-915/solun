@@ -2,7 +2,7 @@ import dbConnect from "@/utils/dbConn";
 import { findOneDocument, deleteOneDocument } from "@/utils/dbUtils";
 import File from "@/models/file";
 import fs from "fs";
-import { decryptFileData } from "@/utils/encryption";
+import { decryptFileData, decryptFile } from "@/utils/encryption";
 import mime from "mime";
 import { ReadableStream } from "web-streams-polyfill";
 import { Buffer } from "buffer";
@@ -29,8 +29,6 @@ export async function POST(request: Request): Promise<Response> {
       const file_name = file.file_name;
       const fileStats = fs.statSync(file_path);
 
-
-
       const fileStream = fs.createReadStream(file_path);
 
   const stream = new ReadableStream({
@@ -56,6 +54,7 @@ const response = new Response(stream);
 response.headers.set("Content-Disposition", `attachment; filename="${file_name}"`);
 response.headers.set("Content-Type", mime.getType(file_name) || "application/octet-stream");
 response.headers.set("Content-Length", fileStats.size.toString());
+response.headers.set("Deletion", file.auto_delete);
 
 return response;
     } else {

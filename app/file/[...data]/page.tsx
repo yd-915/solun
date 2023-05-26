@@ -18,6 +18,7 @@ function ViewFile({ params }: { params: { data: string[] } }) {
   const [showFile, setShowFile] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [downloaded, setDownloaded] = useState(false);
 
   const router = useRouter();
   const uploadNewFile = () => {
@@ -46,11 +47,12 @@ function ViewFile({ params }: { params: { data: string[] } }) {
     }
   }
 
-  async function deleteFile(id: string, secretKey: string, forceDeleteOn1Download: boolean) {
+  async function deleteFile(id: string, secretKey: string, forceDeleteOn1Download: boolean, encryptAgain: boolean) {
     const data = {
       id,
       secret: secretKey,
       forceDeleteOn1Download,
+      encryptAgain,
     };
     const res = await fetch("/api/file/delete", {
       method: "POST",
@@ -93,12 +95,29 @@ function ViewFile({ params }: { params: { data: string[] } }) {
       setFileType(result.type);
       setShowFile(true);
 
-      await deleteFile(id, secretKey, false);
+      await deleteFile(id, secretKey, false, false);
     }
     setLoading(false);
   }
 
   async function handleDownloadFile(id: string, secret: string) {
+    if (downloaded) {
+      return;
+    }
+
+    const dataDecrypt = {
+      id,
+      password,
+      secret: secret,
+    };
+    const resDecrypt = await fetch("/api/file/receive", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataDecrypt),
+    });
+
     const downloadButton = document.getElementById(
       "downloadButton"
     ) as HTMLButtonElement;
@@ -142,10 +161,17 @@ function ViewFile({ params }: { params: { data: string[] } }) {
     URL.revokeObjectURL(url);
     document.body.removeChild(link);
 
-    await deleteFile(id, secret, true);
+    await deleteFile(id, secret, true, true);
 
-    downloadButton.disabled = false;
-    downloadButton.innerHTML = "Download File";
+    console.log(res.headers.get("Deletion"));
+
+    if (res.headers.get("Deletion") === 'download') {
+      setDownloaded(true);
+      downloadButton.innerHTML = "Downloaded";
+    } else {
+      downloadButton.disabled = false;
+      downloadButton.innerHTML = "Download File";
+    }
   }
 
   useEffect(() => {
