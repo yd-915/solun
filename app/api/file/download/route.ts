@@ -1,11 +1,15 @@
 import dbConnect from "@/utils/dbConn";
-import { NextResponse } from "next/server";
 import { findOneDocument, deleteOneDocument } from "@/utils/dbUtils";
 import File from "@/models/file";
 import fs from "fs";
-import { decryptFileData } from "@/utils/encryption";
+import { decryptFileData, decryptFile } from "@/utils/encryption";
+import mime from "mime";
+import { ReadableStream } from "web-streams-polyfill";
+import { Buffer } from "buffer";
 
-export async function POST(request: Request) {
+
+
+export async function POST(request: Request): Promise<Response> {
   try {
     const res = await request.json();
     await dbConnect();
@@ -13,7 +17,7 @@ export async function POST(request: Request) {
     let secret_key = res.secret || null;
 
     if (!id) {
-      return NextResponse.json({ message: "No file ID provided" }, { status: 400 });
+      return new Response(JSON.stringify({ message: "No file ID provided" }), { status: 400, headers: { "Content-Type": "application/json" } });
     }
 
     const file = await findOneDocument(File, { file_id: id });
@@ -23,28 +27,44 @@ export async function POST(request: Request) {
 
       const file_path = file.raw_file_path;
       const file_name = file.file_name;
+      const fileStats = fs.statSync(file_path);
 
-      const fileData = await fs.promises.readFile(file_path, 'binary');
+      const fileStream = fs.createReadStream(file_path);
 
-      const decryptedData = await decryptFileData(fileData, secret_key, file.iv);
-      const decryptedDataEncoded  = decryptedData.toString("base64");
+  const stream = new ReadableStream({
+  start(controller) {
+    fileStream.on("data", (chunk) => {
+      const uint8Array = new Uint8Array(chunk instanceof Buffer ? chunk : new TextEncoder().encode(chunk));
+      controller.enqueue(uint8Array);
+    });
 
-      const autoDeletion = file.auto_delete;
-      if (autoDeletion == 'download') {
-        await deleteOneDocument(File, { file_id: id });
-        fs.unlink(file_path, (err) => {
-          if (err) {
-            return NextResponse.json({ message: "An error occurred while deleting the file, please try again"}, { status: 500 });
-          }
-        })
-      }
-      
-      return NextResponse.json({ fileData: decryptedDataEncoded, file_name: file_name }, { status: 200 });
+    fileStream.on("end", () => {
+      controller.close();
+    });
+
+    fileStream.on("error", (error) => {
+      controller.error(error);
+    });
+  },
+});
+
+
+
+const response = new Response(stream);
+response.headers.set("Content-Disposition", `attachment; filename="${file_name}"`);
+response.headers.set("Content-Type", mime.getType(file_name) || "application/octet-stream");
+response.headers.set("Content-Length", fileStats.size.toString());
+response.headers.set("Deletion", file.auto_delete);
+
+return response;
     } else {
-      return NextResponse.json({ message: "No file found with this ID" }, { status: 404 });
+      return new Response(JSON.stringify({ message: "No file found with this ID" }), { status: 404, headers: { "Content-Type": "application/json" } });
     }
   } catch (err) {
     console.log(err);
-    return NextResponse.json({ message: "An error occurred while retrieving the file, please check if the link is correct and try again" }, { status: 500 });
+    return new Response(JSON.stringify({ message: "An error occurred while retrieving the file, please check if the link is correct and try again" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }

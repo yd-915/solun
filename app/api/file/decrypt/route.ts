@@ -34,16 +34,11 @@ export async function POST(request: Request) {
         }
       }
 
-      // console.log("Decrypting file...")
+    //   console.log("Decrypting file...")
       await decryptFile(file.raw_file_path, secret_key, file.iv); // Decryption of the file before sending the link to the user
 
       return NextResponse.json({
         valid: true,
-        link: file.file_path,
-        file_raw_path: file.raw_file_path,
-        name: file.file_name,
-        type: file.file_type,
-        size: file.file_size,
       }, {
         status: 200,
       });
