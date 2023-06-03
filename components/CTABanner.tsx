@@ -1,4 +1,10 @@
+"use client";
+
 import React from 'react';
+
+const goToSignup = () => {
+  location.href = "https://"+process.env.NEXT_PUBLIC_AUTH_DOMAIN+"/signup";
+};
 
 const CTABanner = () => {
   return (
@@ -9,7 +15,7 @@ const CTABanner = () => {
             <h2 className="text-3xl font-bold">Ready to experience Solun?</h2>
             <p className="text-xl">Join us today and enjoy the benefits of a secure and private communication platform.</p>
           </div>
-          <button className="bg-white text-blue-700 font-semibold py-3 px-6 rounded hover:bg-blue-100 transition duration-200">Get Started</button>
+          <button onClick={goToSignup} className="bg-white text-blue-700 font-semibold py-3 px-6 rounded hover:bg-blue-100 transition duration-200">Get Started</button>
         </div>
       </div>
     </div>

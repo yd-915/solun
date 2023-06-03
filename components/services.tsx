@@ -84,7 +84,7 @@ const Services = () => {
         title: 'Private Mail',
         description: 'Get your own secure mailbox for confidential conversations. Enjoy the convenience of encrypted emails and keep your communication private.',
         buttonText: 'Get Started',
-        buttonLink: '/',
+        buttonLink: 'https://'+process.env.NEXT_PUBLIC_AUTH_DOMAIN+'/signup',
         additionalDetails: (
           <div>
             <li>Choose a domain and username.</li>
