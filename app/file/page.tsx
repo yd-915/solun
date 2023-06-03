@@ -339,7 +339,7 @@ function UploadFile() {
               <div className="mt-4">
                 <span className="text-slate-300">Example Link:</span>
                 <br />
-                <span className="text-slate-400">solun.pm/file/</span>
+                <span className="text-slate-400">{process.env.NEXT_PUBLIC_DOMAIN}/file/</span>
                 <a
                   rel="noopener noreferrer"
                   className="text-blue-600 break-all"
