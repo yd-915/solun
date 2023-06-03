@@ -15,7 +15,7 @@ export const metadata = {
   openGraph: {
     title: 'Solun • Privacy at its highest',
     description: 'Solun is a service that allows you to share files, text and sending emails with end-to-end encryption, without storing any user related data on our servers. Become anonymous and protect your privacy today.',
-    url: 'https://solun.pm',
+    url: process.env.NEXT_PUBLIC_DOMAIN,
     siteName: 'Solun',
     images: [
       {
