@@ -45,7 +45,7 @@ export async function POST(request: Request) {
 
         await insertMessage.save();
 
-        let link = "https://" + process.env.NEXT_PUBLIC_DOMAIN + "/msg/" + mid + "/";
+        let link = "https://" + process.env.NEXT_PUBLIC_MAIN_DOMAIN + "/msg/" + mid + "/";
         if (endToEndEncryption) {
             link += secret_key + "/";
         }
