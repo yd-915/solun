@@ -19,7 +19,7 @@ export const metadata = {
     siteName: 'Solun',
     images: [
       {
-        url: process.env.NEXT_PUBLIC_MAIN_DOMAIN + '/solun-logo.png',
+        url: `${process.env.NEXT_PUBLIC_MAIN_DOMAIN}/solun-logo.png`,
         width: 512,
         height: 512,
         alt: 'Solun Logo',
