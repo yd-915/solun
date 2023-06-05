@@ -58,6 +58,7 @@ export async function POST(request: Request) {
             status: 200,
         });
     } catch (err) {
+        console.log(err);
         return NextResponse.json({
             message: "An error occurred while creating the message, please try again",
         }, {
