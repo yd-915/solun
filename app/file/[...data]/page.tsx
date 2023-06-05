@@ -39,7 +39,7 @@ function ViewFile({ params }: { params: { data: string[] } }) {
     const result = await res.json();
     const notFoundField = document.getElementById("notFoundField")!;
     if (!res.ok) {
-      notFoundField.innerHTML = "Message not found.";
+      notFoundField.innerHTML = "File not found.";
       setFileExists(false);
     } else {
       setFileExists(true);
