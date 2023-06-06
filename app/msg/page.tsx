@@ -55,9 +55,9 @@ function CreateMessage() {
   }, [bruteforceSafe, endToEndEncryption]);
 
   useEffect(() => {
-    if (endToEndEncryption) {
+    if (endToEndEncryption || password !== "") {
       setSecurityIndicator("Secure");
-    } else if (bruteforceSafe || password !== "") {
+    } else if (bruteforceSafe) {
       setSecurityIndicator("Okay");
     } else {
       setSecurityIndicator("Not Secure");
