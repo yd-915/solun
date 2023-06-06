@@ -11,6 +11,7 @@ import { decryptTransfer } from "@/utils/clientEncryption";
 import File from "@/models/file";
 import crypto from "crypto";
 import { extname } from "path";
+import { hashPassword } from "@/utils/hash";
 
 
 export async function POST(request: NextRequest) {
@@ -39,7 +40,7 @@ export async function POST(request: NextRequest) {
     const secret_key = await generateAES();
         
     const passwordSet = password !== "";
-    const encrypted_password = passwordSet ? await encrypt(password, secret_key as string) : null;
+    const encrypted_password = passwordSet ? await hashPassword(password) : null;
 
     const dbSecretKey = endToEndEncryption ? null : secret_key;
 
