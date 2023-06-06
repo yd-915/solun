@@ -41,13 +41,13 @@ export async function POST(request: Request) {
           });
           await deleteOneDocument(File, { file_id: id });
         }
-        return NextResponse.json({ message: "File will be deleted after download" }, { status: 200 });
+        return NextResponse.json({ message: "File will be deleted after download." }, { status: 200 });
       } else if (deletionMode === 'never') {
         if(encryptAgain) {
           await encryptFile(file_path, secret_key, ivBuffer);
         }
         
-        return NextResponse.json({ message: "Auto Deletion is disabled for this file, it will never be deleted" }, { status: 200 });
+        return NextResponse.json({ message: "Auto Deletion is disabled for this file, it will never be deleted." }, { status: 200 });
       } else {
         const deletionTimes = {
           '1d': 1 * 24 * 60 * 60 * 1000,
@@ -92,7 +92,7 @@ export async function POST(request: Request) {
             await encryptFile(file_path, secret_key, ivBuffer);
           }
           
-          return NextResponse.json({ message: "File will be deleted in " + timeString }, { status: 200 });
+          return NextResponse.json({ message: "File will be deleted in " + timeString + " ." }, { status: 200 });
         } else {
           // default action
           if(encryptAgain) {
@@ -101,10 +101,10 @@ export async function POST(request: Request) {
           await deleteOneDocument(File, { file_id: id });
           fs.unlink(file_path, (err) => {
             if (err) {
-              return NextResponse.json({ message: "An error occurred while deleting the file, please try again"}, { status: 500 });
+              return NextResponse.json({ message: "An error occurred while deleting the file, please try again."}, { status: 500 });
             }
           })
-          return NextResponse.json({ message: "File deleted successfully" }, { status: 200 });
+          return NextResponse.json({ message: "File deleted successfully." }, { status: 200 });
         }        
       }
     }

@@ -9,17 +9,17 @@ import Header from '@/components/header'
 import Footer from '@/components/footer'
 
 export const metadata = {
+  metadataBase: new URL('https://' + process.env.NEXT_PUBLIC_MAIN_DOMAIN),
   title: 'Solun • Privacy at its highest',
   description: 'Solun is a service that allows you to share files, text and sending emails with end-to-end encryption, without storing any user related data on our servers. Become anonymous and protect your privacy today.',
   tags: ['Solun', 'Privacy', 'Anonymous', 'Encryption', 'Files', 'Text', 'Emails', 'Share Files', 'Upload Files', 'Send Encrypted Texts'],
   openGraph: {
     title: 'Solun • Privacy at its highest',
     description: 'Solun is a service that allows you to share files, text and sending emails with end-to-end encryption, without storing any user related data on our servers. Become anonymous and protect your privacy today.',
-    url: process.env.NEXT_PUBLIC_MAIN_DOMAIN,
     siteName: 'Solun',
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_MAIN_DOMAIN}/solun-logo.png`,
+        url: 'https://cdn.solun.pm/images/logo/solun-logo.png',
         width: 512,
         height: 512,
         alt: 'Solun Logo',
@@ -28,7 +28,7 @@ export const metadata = {
   },
   locale: 'en_US',
   type: 'website',
-}
+};
 
 export default function RootLayout({
   children,

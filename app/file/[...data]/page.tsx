@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import toast, { Toaster } from 'react-hot-toast';
 
 function ViewFile({ params }: { params: { data: string[] } }) {
   const id = params.data[0];
@@ -63,9 +64,11 @@ function ViewFile({ params }: { params: { data: string[] } }) {
     });
     const result = await res.json();
     if (!res.ok) {
-      document.getElementById("deletionField")!.innerHTML = result.message;
+      //document.getElementById("deletionField")!.innerHTML = result.message;
+      toast.error(result.message);
     } else {
-      document.getElementById("deletionField")!.innerHTML = result.message;
+      //document.getElementById("deletionField")!.innerHTML = result.message;
+      toast.success(result.message);
     }
   }
 
@@ -137,6 +140,7 @@ function ViewFile({ params }: { params: { data: string[] } }) {
     });
 
     if (!res.ok) {
+      toast.error('Something went wrong, please try again later');
       downloadButton.disabled = false;
       downloadButton.innerHTML = "Download File";
       return;
@@ -212,6 +216,12 @@ function ViewFile({ params }: { params: { data: string[] } }) {
 
   return (
     <div className="flex items-center justify-center py-8 px-2 md:min-h-screen">
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 5000
+        }}
+      />
       <div className="bg-slate-800 p-5 rounded-lg shadow-md w-full max-w-md md:mb-96 mb-40">
         {fileExists ? (
           showFile ? (
