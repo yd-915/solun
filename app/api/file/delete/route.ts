@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     
       if (deletionMode === 'download'){
         if(encryptAgain) {
-          await encryptFile(file_path, secret_key, ivBuffer);
+          //await encryptFile(file_path, secret_key, ivBuffer);
         }
         if(forceDeleteOn1Download){
           fs.unlink(file_path, (err) => {
@@ -40,11 +40,12 @@ export async function POST(request: Request) {
             }
           });
           await deleteOneDocument(File, { file_id: id });
+          return NextResponse.json({ message: "File deleted successfully." }, { status: 200 });
         }
         return NextResponse.json({ message: "File will be deleted after download." }, { status: 200 });
       } else if (deletionMode === 'never') {
         if(encryptAgain) {
-          await encryptFile(file_path, secret_key, ivBuffer);
+          //await encryptFile(file_path, secret_key, ivBuffer);
         }
         
         return NextResponse.json({ message: "Auto Deletion is disabled for this file, it will never be deleted." }, { status: 200 });
@@ -89,14 +90,14 @@ export async function POST(request: Request) {
           
           if(encryptAgain) {
             // console.log("encrypting file again")
-            await encryptFile(file_path, secret_key, ivBuffer);
+            //await encryptFile(file_path, secret_key, ivBuffer);
           }
           
           return NextResponse.json({ message: "File will be deleted in " + timeString + " ." }, { status: 200 });
         } else {
           // default action
           if(encryptAgain) {
-            await encryptFile(file_path, secret_key, ivBuffer);
+            //await encryptFile(file_path, secret_key, ivBuffer);
           }
           await deleteOneDocument(File, { file_id: id });
           fs.unlink(file_path, (err) => {

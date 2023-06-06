@@ -25,6 +25,8 @@ export async function POST(request: Request): Promise<Response> {
     if (file) {
       secret_key = secret_key || file.secret;
 
+      await decryptFile(file.raw_file_path, secret_key, file.iv);
+
       const file_path = file.raw_file_path;
       const file_name = file.file_name;
       const fileStats = fs.statSync(file_path);
