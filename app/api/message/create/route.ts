@@ -5,6 +5,7 @@ import { encrypt } from "@/utils/encryption";
 import { decryptTransfer } from "@/utils/clientEncryption";
 import Message from "@/models/message";
 import { NextResponse } from "next/server";
+import { hashPassword } from "@/utils/hash";
 
 export async function POST(request: Request) {
     try {
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
         const encrypted_message = await encrypt(message_text, secret_key as string);
         
         const passwordSet = password !== "";
-        const encrypted_password = passwordSet ? await encrypt(password, secret_key as string) : null;
+        const encrypted_password = passwordSet ? await hashPassword(password) : null;
 
         const dbSecretKey = endToEndEncryption ? null : secret_key;
         

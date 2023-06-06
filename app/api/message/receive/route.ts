@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { findOneDocument } from "@/utils/dbUtils";
 import { decrypt } from "@/utils/encryption";
 import Message from "@/models/message";
+import { comparePassword } from "@/utils/hash";
 
 export async function POST(request: Request) {
   try {
@@ -26,9 +27,7 @@ export async function POST(request: Request) {
         if (!password) {
           return NextResponse.json({ message: "This message requires a password" }, { status: 400 });
         } else {
-          const decrypted_password = await decrypt(message.password, secret_key);
-
-          if (password !== decrypted_password) {
+          if (!await comparePassword(password, message.password)) {
             return NextResponse.json({ message: "Incorrect password" }, { status: 403 });
           }
         }
