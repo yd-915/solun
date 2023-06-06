@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import toast, { Toaster } from 'react-hot-toast';
 
 function ViewMessage({ params }: { params: { data: string[] } }) {
 
@@ -56,11 +57,15 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
     });
     await res.json();
     if (!res.ok) {
-      document.getElementById("deletionField")!.innerHTML =
+      /*document.getElementById("deletionField")!.innerHTML =
         "Message could not be deleted.";
+      */
+      toast.error('Message could not be deleted.');
     } else {
-      document.getElementById("deletionField")!.innerHTML =
+      /*document.getElementById("deletionField")!.innerHTML =
         "Message got deleted from the system.";
+      */
+     toast.success('Message was successfully deleted.');
     }
   }
 
@@ -129,6 +134,12 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
 
   return (
     <div className="flex items-center justify-center py-8 px-2 md:min-h-screen">
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 5000
+        }}
+      />
       <div className="bg-slate-800 p-5 rounded-lg shadow-md w-full max-w-md md:mb-96 mb-40">
         {messageExists ? (
           showMessage ? (
