@@ -163,7 +163,7 @@ function UploadFile() {
               </h1>
               <div className="flex items-center">
                   <button
-                    className={`text-white font-bold px-3 py-1 rounded-full transform transition duration-200 hover:scale-105 ml-auto ${
+                    className={`text-white font-bold px-3 py-1 rounded-full hidden md:block transform transition duration-200 hover:scale-105 ml-auto ${
                               securityIndicator === "Not Secure"
                                 ? "bg-red-500 hover:bg-red-600"
                                 : securityIndicator === "Okay"
@@ -206,7 +206,7 @@ function UploadFile() {
                     className="absolute opacity-0 h-64 w-full max-w-sm cursor-pointer"
                     onChange={handleFileChange}
                   />
-                <div className="flex flex-col items-center justify-center">
+                <div className="flex flex-col items-center text-center justify-center">
                   <FontAwesomeIcon icon={faCloudUploadAlt} size="6x" color="#3B82F6" />
                   <p className="text-slate-300">Drag and drop your file here or click to browse</p>
                   <p className="text-slate-400 text-sm">Max file size: 2.5GB</p>
@@ -221,7 +221,7 @@ function UploadFile() {
                   <span className="text-slate-400">Size: {(files[0].size / 1000000).toFixed(2)} MB</span>
                 </div>
               )}
-              <div className="flex justify-between items-start mt-4">
+              <div className="flex justify-between flex-wrap items-start mt-4">
                 <div className="flex flex-col">
                     <div className="relative flex items-center mb-2">
                       <input

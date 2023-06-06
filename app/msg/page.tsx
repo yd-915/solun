@@ -143,7 +143,7 @@ function CreateMessage() {
               </h1>
               <div className="flex items-center">
                 <button
-                  className={`text-white font-bold px-3 py-1 rounded-full transform transition duration-200 hover:scale-105 ml-auto ${
+                  className={`text-white font-bold px-3 py-1 rounded-full hidden md:block transform transition duration-200 hover:scale-105 ml-auto ${
                             securityIndicator === "Not Secure"
                               ? "bg-red-500 hover:bg-red-600"
                               : securityIndicator === "Okay"
@@ -156,7 +156,7 @@ function CreateMessage() {
                 >                
                 {securityIndicator}
                 {showTooltip && 
-                  <div className="absolute w-64 top-full left-1/2 transform -translate-x-1/2 bg-black text-white p-2 text-md rounded-md shadow-lg mt-2">
+                  <div className="absolute w-64 top-full left-1/2 transform -translate-x-1/4 md:-translate-x-1/2 bg-black text-white p-2 text-md rounded-md shadow-lg mt-2">
                     The Security Indicator provides real-time updates on your chosen security settings.
                   </div>
                 }
@@ -187,7 +187,7 @@ function CreateMessage() {
                   minLength={1}
                 ></textarea>
               </div>
-              <div className="flex justify-between items-start mt-4">
+              <div className="flex justify-between flex-wrap items-start mt-4">
                 <div className="flex flex-col">
                   <div className="relative flex items-center mb-2">
                     <input
@@ -223,7 +223,7 @@ function CreateMessage() {
                 <button
                   type="submit"
                   id="submit"
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded transition duration-200 shadow-md ml-2"
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded transition duration-200 shadow-md md:ml-2"
                 >
                   Create
                 </button>
