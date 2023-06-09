@@ -12,14 +12,22 @@ const Footer = () => {
               E-Mail: contact@solun.pm
             </p>
           </div>
-          <div className="text-white">
-            <h3 className="text-2xl font-bold mb-4">Quick Links</h3>
-            <ul>
-              <li><Link href="https://github.com/solun-pm" target='_blank' className="hover:text-blue-300 transition duration-200">GitHub</Link></li>
-              <li><Link href="/#services" className="hover:text-blue-300 transition duration-200">Services</Link></li>
-              <li><Link href="https://discord.gg/UHWcTMawrv" target='_blank' className="hover:text-blue-300 transition duration-200">Discord</Link></li>
-              <li><Link href="/privacy" className="hover:text-blue-300 transition duration-200">Privacy Policy</Link></li>
-            </ul>
+          <div className="flex flex-col md:flex-row text-white ml-auto">
+            <div>
+              <h3 className="text-2xl font-bold mb-4">Quick Links</h3>
+              <ul>
+                <li><Link href="https://github.com/solun-pm" target='_blank' className="hover:text-blue-300 transition duration-200">GitHub</Link></li>
+                <li><Link href="/#services" className="hover:text-blue-300 transition duration-200">Services</Link></li>
+                <li><Link href="https://discord.gg/UHWcTMawrv" target='_blank' className="hover:text-blue-300 transition duration-200">Our Discord</Link></li>
+              </ul>
+            </div>
+            <div className="md:ml-8">
+              <h3 className="text-2xl font-bold mb-4">Rights</h3>
+              <ul>
+                <li><Link href="/tos" className="hover:text-blue-300 transition duration-200">Terms of Service</Link></li>
+                <li><Link href="/privacy" className="hover:text-blue-300 transition duration-200">Privacy Policy</Link></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

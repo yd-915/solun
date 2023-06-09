@@ -6,7 +6,7 @@ export const metadata = {
     title: 'Solun • Terms of Service',
 }
 
-export default function Privacy() {
+export default function Tos() {
 
   return (
     <div className="bg-primary min-h-screen">
