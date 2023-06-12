@@ -5,9 +5,6 @@ import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
 
-import Header from '@/components/header'
-import Footer from '@/components/footer'
-
 export const metadata = {
   metadataBase: new URL('https://' + process.env.NEXT_PUBLIC_MAIN_DOMAIN),
   title: 'Solun • Privacy at its highest',
@@ -38,9 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Header />
         {children}
-        <Footer />
       </body>
     </html>
   );
