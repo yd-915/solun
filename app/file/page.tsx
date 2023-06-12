@@ -9,6 +9,8 @@ import generatePassword from '@/utils/generatePassword';
 import Link from 'next/link';
 import { encryptTransfer } from '@/utils/clientEncryption';
 import axios from 'axios';
+import Header from '@/components/header'
+import Footer from '@/components/footer'
 
 function UploadFile() {
   const [bruteforceSafe, setBruteforceSafe] = useState(false);
@@ -153,6 +155,7 @@ function UploadFile() {
 
   return (
     <>
+    <Header />
     <div className="flex items-center justify-center py-8 px-2 md:min-h-screen">
       <div className="bg-slate-800 p-5 rounded-lg shadow-md w-full max-w-md md:mb-96 mb-40">
         {!uploadCreated ? (
@@ -404,6 +407,7 @@ function UploadFile() {
         )}
       </div>
     </div>
+    <Footer />
     </>
   );
 }

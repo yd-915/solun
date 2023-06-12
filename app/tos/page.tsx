@@ -1,6 +1,8 @@
 import WelcomerBlog from '@/components/welcomerBlog'
 import CTABanner from '@/components/CTABanner'
 import TosContent from '@/content/tos.mdx'
+import Header from '@/components/header'
+import Footer from '@/components/footer'
 
 export const metadata = {
     title: 'Solun • Terms of Service',
@@ -9,6 +11,8 @@ export const metadata = {
 export default function Tos() {
 
   return (
+    <>
+    <Header />
     <div className="bg-primary min-h-screen">
       <section>
         <WelcomerBlog title="Terms of Service" />
@@ -24,5 +28,7 @@ export default function Tos() {
         <CTABanner />
       </section>
     </div>
+    <Footer />
+    </>
   )
 }

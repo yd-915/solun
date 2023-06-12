@@ -1,6 +1,8 @@
 import WelcomerBlog from '@/components/welcomerBlog'
 import CTABanner from '@/components/CTABanner'
 import HowFileContent from '@/content/howFile.mdx'
+import Header from '@/components/header'
+import Footer from '@/components/footer'
 
 export const metadata = {
     title: 'Solun • How we protect your files',
@@ -10,6 +12,8 @@ export const metadata = {
 export default function HowFile() {
 
   return (
+    <>
+    <Header />
     <div className="bg-primary min-h-screen">
       <section>
         <WelcomerBlog title="How we protect your files" />
@@ -25,5 +29,7 @@ export default function HowFile() {
         <CTABanner />
       </section>
     </div>
+    <Footer />
+    </>
   )
 }

@@ -1,6 +1,8 @@
 import WelcomerBlog from '@/components/welcomerBlog'
 import CTABanner from '@/components/CTABanner'
 import PrivacyContent from '@/content/privacy.mdx'
+import Header from '@/components/header'
+import Footer from '@/components/footer'
 
 export const metadata = {
     title: 'Solun • Privacy Policy',
@@ -9,6 +11,8 @@ export const metadata = {
 export default function Privacy() {
 
   return (
+    <>
+    <Header />
     <div className="bg-primary min-h-screen">
       <section>
         <WelcomerBlog title="Privacy Policy" />
@@ -24,5 +28,7 @@ export default function Privacy() {
         <CTABanner />
       </section>
     </div>
+    <Footer />
+    </>
   )
 }

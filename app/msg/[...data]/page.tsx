@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from 'react-hot-toast';
+import Header from '@/components/header'
+import Footer from '@/components/footer'
 
 function ViewMessage({ params }: { params: { data: string[] } }) {
 
@@ -133,6 +135,8 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
   }
 
   return (
+    <>
+    <Header />
     <div className="flex items-center justify-center py-8 px-2 md:min-h-screen">
       <Toaster
         position="top-right"
@@ -200,6 +204,8 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
         {error && <p className="text-red-500 mt-2 text-center">{error}</p>}
       </div>
     </div>
+    <Footer />
+    </>
   );
 }
 
