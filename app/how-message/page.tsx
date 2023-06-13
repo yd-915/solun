@@ -1,6 +1,8 @@
 import WelcomerBlog from '@/components/welcomerBlog'
 import CTABanner from '@/components/CTABanner'
 import HowMessageContent from '@/content/howMessage.mdx'
+import Header from '@/components/header'
+import Footer from '@/components/footer'
 
 export const metadata = {
     title: 'Solun • How we encrypt your message',
@@ -10,6 +12,8 @@ export const metadata = {
 export default function HowMessage() {
 
   return (
+    <>
+    <Header />
     <div className="bg-primary min-h-screen">
       <section>
         <WelcomerBlog title="How we encrypt your message" />
@@ -25,5 +29,7 @@ export default function HowMessage() {
         <CTABanner />
       </section>
     </div>
+    <Footer />
+    </>
   )
 }

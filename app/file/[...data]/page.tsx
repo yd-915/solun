@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from 'react-hot-toast';
+import Header from '@/components/header'
+import Footer from '@/components/footer'
 
 function ViewFile({ params }: { params: { data: string[] } }) {
   const id = params.data[0];
@@ -215,6 +217,8 @@ function ViewFile({ params }: { params: { data: string[] } }) {
   }
 
   return (
+    <>
+    <Header />
     <div className="flex items-center justify-center py-8 px-2 md:min-h-screen">
       <Toaster
         position="top-right"
@@ -305,6 +309,8 @@ function ViewFile({ params }: { params: { data: string[] } }) {
         )}
       </div>
     </div>
+    <Footer />
+    </>
   );
 }
 

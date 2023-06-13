@@ -8,6 +8,8 @@ import generateAES from "@/utils/generateAES";
 import generateID from "@/utils/generateId";
 import generatePassword from '@/utils/generatePassword';
 import Link from 'next/link';
+import Header from '@/components/header'
+import Footer from '@/components/footer'
 
 function CreateMessage() {
   const [bruteforceSafe, setBruteforceSafe] = useState(false);
@@ -133,6 +135,7 @@ function CreateMessage() {
 
   return (
     <>
+    <Header />
     <div className="flex items-center justify-center py-8 px-2 md:min-h-screen">
       <div className="bg-slate-800 p-5 rounded-lg shadow-md w-full max-w-md md:mb-96 mb-40">
         {!messageCreated ? (
@@ -333,6 +336,7 @@ function CreateMessage() {
         )}
       </div>
     </div>
+    <Footer />
     </>
   );
 }

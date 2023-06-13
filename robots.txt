@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+Disallow: /msg/*/
+Disallow: /file/*/
