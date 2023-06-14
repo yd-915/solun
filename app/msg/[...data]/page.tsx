@@ -59,15 +59,9 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
     });
     await res.json();
     if (!res.ok) {
-      /*document.getElementById("deletionField")!.innerHTML =
-        "Message could not be deleted.";
-      */
-      toast.error('Message could not be deleted.');
+      toast.error('Message could not be deleted');
     } else {
-      /*document.getElementById("deletionField")!.innerHTML =
-        "Message got deleted from the system.";
-      */
-     toast.success('Message was successfully deleted.');
+     toast.success('Message was successfully deleted');
     }
   }
 

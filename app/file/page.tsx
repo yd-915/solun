@@ -11,6 +11,7 @@ import { encryptTransfer } from '@/utils/clientEncryption';
 import axios from 'axios';
 import Header from '@/components/header'
 import Footer from '@/components/footer'
+import toast, { Toaster } from 'react-hot-toast';
 
 function UploadFile() {
   const [bruteforceSafe, setBruteforceSafe] = useState(false);
@@ -90,7 +91,7 @@ function UploadFile() {
   const handleFileChange = (event: any) => {
     const file = event.target.files[0]; // assuming single file upload
     if (file.size > MAX_FILE_SIZE) {
-      alert("File size exceeds the maximum limit of 2.5GB");
+      toast.error('File size exceeds the maximum limit of 2.5GB');
       return;
     }
     setFiles([file]);
@@ -146,7 +147,7 @@ function UploadFile() {
           alert(data.message);
         }
       } catch (err) {
-        alert('An error occurred while uploading the file.');
+        toast.error('There was an error uploading your file');
       }
     }
     setIsUploading(false);
@@ -157,6 +158,12 @@ function UploadFile() {
     <>
     <Header />
     <div className="flex items-center justify-center py-8 px-2 md:min-h-screen">
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 3000,
+        }}
+      />
       <div className="bg-slate-800 p-5 rounded-lg shadow-md w-full max-w-md md:mb-96 mb-40">
         {!uploadCreated ? (
           <>

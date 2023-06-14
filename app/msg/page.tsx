@@ -10,6 +10,7 @@ import generatePassword from '@/utils/generatePassword';
 import Link from 'next/link';
 import Header from '@/components/header'
 import Footer from '@/components/footer'
+import toast, { Toaster } from 'react-hot-toast';
 
 function CreateMessage() {
   const [bruteforceSafe, setBruteforceSafe] = useState(false);
@@ -95,7 +96,7 @@ function CreateMessage() {
         const message = target.message.value;
 
         if(message === '') {
-          alert('Please enter a message!');
+          toast.error('Please enter a message');
         } else {
           submitButton.disabled = true;
           submitButton.innerHTML = '<div class="flex items-center"><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span class="text-white">Creating</span></div>';
@@ -124,8 +125,9 @@ function CreateMessage() {
             })
             const result = await res.json();
             if(!res.ok) {
+                toast.error('There was an error creating your message');
                 submitButton.disabled = false;
-                submitButton.innerHTML = '<div class="flex items-center"><svg class="animate-error-cross mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18L18 6M6 6l12 12"></path></svg><span class="text-white">Error</span></div>';
+                submitButton.innerHTML = 'Create';
             } else {
                 setMessageCreated(true);
                 setMessageLink(result.link);
@@ -137,6 +139,12 @@ function CreateMessage() {
     <>
     <Header />
     <div className="flex items-center justify-center py-8 px-2 md:min-h-screen">
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 3000,
+        }}
+      />
       <div className="bg-slate-800 p-5 rounded-lg shadow-md w-full max-w-md md:mb-96 mb-40">
         {!messageCreated ? (
           <>
