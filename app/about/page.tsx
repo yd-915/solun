@@ -1,6 +1,8 @@
 import WelcomerBlog from '@/components/welcomerBlog'
 import CTABanner from '@/components/CTABanner'
 import AboutContent from '@/content/about.mdx'
+import Header from '@/components/header'
+import Footer from '@/components/footer'
 
 export const metadata = {
     title: 'Solun • About',
@@ -9,6 +11,8 @@ export const metadata = {
 export default function About() {
 
   return (
+    <>
+    <Header />
     <div className="bg-primary min-h-screen">
       <section>
         <WelcomerBlog title="About Solun" />
@@ -24,5 +28,7 @@ export default function About() {
         <CTABanner />
       </section>
     </div>
+    <Footer />
+    </>
   )
 }
