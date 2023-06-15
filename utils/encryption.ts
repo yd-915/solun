@@ -28,22 +28,32 @@ export async function decrypt(message: string, key: string) {
 }
 
 export async function encryptFile(path: string, key: string, iv: Buffer) {
-  const keyBuffer = Buffer.from(key, 'hex');
-  const cipher = crypto.createCipheriv(algorithm, keyBuffer, iv);
-  const fileBuffer = readFileSync(path);
-  const encryptedBuffer = Buffer.concat([cipher.update(fileBuffer), cipher.final()]);
-  
-  writeFileSync(path, encryptedBuffer);
+  try {
+    const keyBuffer = Buffer.from(key, 'hex');
+    const cipher = crypto.createCipheriv(algorithm, keyBuffer, iv);
+    const fileBuffer = readFileSync(path);
+    const encryptedBuffer = Buffer.concat([cipher.update(fileBuffer), cipher.final()]);
+    
+    writeFileSync(path, encryptedBuffer);
+  } catch (err) {
+    console.error(err);
+    return;
+  }
 }
 
 export async function decryptFile(path: string, key: string, iv: string) {
-  const keyBuffer = Buffer.from(key, 'hex');
-  const ivBuffer = Buffer.from(iv, 'hex');
-  const encryptedData = readFileSync(path);
-  const decipher = crypto.createDecipheriv(algorithm, keyBuffer, ivBuffer);
-  const decryptedData = Buffer.concat([decipher.update(encryptedData), decipher.final()]);
-  
-  writeFileSync(path, decryptedData);
+  try {
+    const keyBuffer = Buffer.from(key, 'hex');
+    const ivBuffer = Buffer.from(iv, 'hex');
+    const encryptedData = readFileSync(path);
+    const decipher = crypto.createDecipheriv(algorithm, keyBuffer, ivBuffer);
+    const decryptedData = Buffer.concat([decipher.update(encryptedData), decipher.final()]);
+    
+    writeFileSync(path, decryptedData);
+  } catch (err) {
+    console.error(err);
+    return;
+  }
 }
 
 export async function decryptFileData(fileData: any, key: string, iv: string) {

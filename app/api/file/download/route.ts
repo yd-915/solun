@@ -2,7 +2,7 @@ import dbConnect from "@/utils/dbConn";
 import { findOneDocument, deleteOneDocument } from "@/utils/dbUtils";
 import File from "@/models/file";
 import fs from "fs";
-import { decryptFileData, decryptFile } from "@/utils/encryption";
+import { decryptFile } from "@/utils/encryption";
 import mime from "mime";
 import { ReadableStream } from "web-streams-polyfill";
 import { Buffer } from "buffer";

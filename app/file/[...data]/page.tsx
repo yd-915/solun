@@ -27,6 +27,11 @@ function ViewFile({ params }: { params: { data: string[] } }) {
   const [downloaded, setDownloaded] = useState(false);
   const [downloadLoading, setDownloadLoading] = useState(false);
   const [downloadProcess, setDownloadProcess] = useState('');
+  const [isMobile, setIsMobile] = useState(false);
+  const [deleteButton, setDeleteButton] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
+  const [encryptButton, setEncryptButton] = useState(false);
 
   const router = useRouter();
   const uploadNewFile = () => {
@@ -55,12 +60,13 @@ function ViewFile({ params }: { params: { data: string[] } }) {
     }
   }
 
-  async function deleteFile(id: string, secretKey: string, forceDeleteOn1Download: boolean, encryptAgain: boolean) {
+  async function deleteFile(id: string, secretKey: string, forceDeleteOn1Download: boolean, encryptAgain: boolean, mobile?: boolean) {
     const data = {
       id,
       secret: secretKey,
       forceDeleteOn1Download,
       encryptAgain,
+      mobile,
     };
     const res = await fetch("/api/file/delete", {
       method: "POST",
@@ -83,8 +89,7 @@ function ViewFile({ params }: { params: { data: string[] } }) {
     const browser = detect();
     if (browser) {
       if (browser.os === 'iOS') {
-        toast.error('Sorry, iOS is currently not supported, please use a different device or contact us for help.'); 
-        return;
+        setIsMobile(true);
       }
     }
     setLoading(true);
@@ -103,7 +108,7 @@ function ViewFile({ params }: { params: { data: string[] } }) {
     });
     const result = await res.json();
     if (!res.ok) {
-      setError(result.message);
+      toast.error(result.message);
     } else {
       setFileLink(result.link);
       setFile_raw_path(result.file_raw_path);
@@ -112,7 +117,7 @@ function ViewFile({ params }: { params: { data: string[] } }) {
       setFileType(result.type);
       setShowFile(true);
 
-      await deleteFile(id, secretKey, false, false);
+      //await deleteFile(id, secretKey, false, false);
     }
     setLoading(false);
   }
@@ -178,22 +183,41 @@ function ViewFile({ params }: { params: { data: string[] } }) {
       link.click();
       URL.revokeObjectURL(url);
   
-      await deleteFile(id, secret, true, true);
+      if (!isMobile) {
+        await deleteFile(id, secret, true, true);
+      }
   
       if (response.headers.get("Deletion") === 'download') {
         setDownloaded(true);
         setDownloadLoading(false);
+        if (isMobile) {
+          setDeleteButton(true);
+        }
       } else {
         setDownloadLoading(false);
         setDownloaded(false);
+        if (isMobile) {
+          setEncryptButton(true);
+        }
       }
     } catch (err) {
       toast.error('Something went wrong, please try again later');
       setDownloadLoading(false);
       setDownloaded(false);
     }
-  }  
-  
+  }
+
+  async function handleDeleteFile(id: string, secret: string) {
+    setDeleteLoading(true);
+    await deleteFile(id, secret, true, true);
+    setDeleteLoading(false);
+    setDeleteButton(false);
+  }
+
+  async function handleEncryptFile(id: string, secret: string) {
+    await deleteFile(id, secret, true, true, true);
+    setEncryptButton(false);
+  }
 
   useEffect(() => {
     checkId(id);
@@ -260,24 +284,56 @@ function ViewFile({ params }: { params: { data: string[] } }) {
                 </p>
               </div>
               <div className="flex justify-center">
-              <button
-                id="downloadButton"
-                onClick={() => {
-                  handleDownloadFile(id, secret);
-                }}
-                disabled={downloadLoading || downloaded}
-                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold text-lg px-8 py-4 rounded transition duration-200 shadow-lg inline-block text-center cursor-pointer min-w-max w-58"
-                style={{minWidth: '180px'}}
-              >
-                {downloadLoading ? (
-                  <>
-                    <FontAwesomeIcon icon={faCircleNotch} className="animate-spin" />
-                    <span className="ml-2">{downloadProcess}</span>
-                  </>
+                {encryptButton ? (
+                  <button
+                    id="encryptButton"
+                    onClick={() => {
+                      handleEncryptFile(id, secret);
+                    }}
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-semibold text-lg px-8 py-4 rounded transition duration-200 shadow-lg inline-block text-center cursor-pointer min-w-max w-58"
+                    style={{ minWidth: '180px' }}
+                  >
+                    Encrypt File
+                  </button>
+                ) : !deleteButton ? (
+                  <button
+                    id="downloadButton"
+                    onClick={() => {
+                      handleDownloadFile(id, secret);
+                    }}
+                    disabled={downloadLoading || downloaded}
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-semibold text-lg px-8 py-4 rounded transition duration-200 shadow-lg inline-block text-center cursor-pointer min-w-max w-58"
+                    style={{ minWidth: '180px' }}
+                  >
+                    {downloadLoading ? (
+                      <>
+                        <FontAwesomeIcon icon={faCircleNotch} className="animate-spin" />
+                        <span className="ml-2">{downloadProcess}</span>
+                      </>
+                    ) : (
+                      downloaded ? "Downloaded" : "Download File"
+                    )}
+                  </button>
                 ) : (
-                  downloaded ? "Downloaded" : "Download File"
+                  <button
+                    id="deleteButton"
+                    onClick={() => {
+                      handleDeleteFile(id, secret);
+                    }}
+                    disabled={deleteLoading}
+                    className="bg-red-500 hover:bg-red-600 text-white font-semibold text-lg px-8 py-4 rounded transition duration-200 shadow-lg inline-block text-center cursor-pointer min-w-max w-58"
+                    style={{ minWidth: '180px' }}
+                  >
+                    {deleteLoading ? (
+                      <>
+                        <FontAwesomeIcon icon={faCircleNotch} className="animate-spin" />
+                        <span className="ml-2">Deleting...</span>
+                      </>
+                    ) : (
+                      "Delete File"
+                    )}
+                  </button>
                 )}
-              </button>
               </div>
               <div className="flex flex-col justify-center italic items-center mt-4 flex-wrap">
                 <p
