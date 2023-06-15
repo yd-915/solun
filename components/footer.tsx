@@ -12,8 +12,8 @@ const Footer = () => {
               E-Mail: contact@solun.pm
             </p>
           </div>
-          <div className="flex flex-col md:flex-row text-white ml-auto">
-            <div>
+          <div className="flex flex-col md:flex-row text-white md:gap-10">
+            <div className="mb-8 md:mb-0 md:ml-auto">
               <h3 className="text-2xl font-bold mb-4">Quick Links</h3>
               <ul>
                 <li><Link href="https://github.com/solun-pm" target='_blank' className="hover:text-blue-300 transition duration-200">GitHub</Link></li>
@@ -21,7 +21,17 @@ const Footer = () => {
                 <li><Link href="https://discord.gg/UHWcTMawrv" target='_blank' className="hover:text-blue-300 transition duration-200">Our Discord</Link></li>
               </ul>
             </div>
-            <div className="md:ml-8">
+            <div>
+            <div className="mb-8 md:mb-0 md:ml-auto">
+              <h3 className="text-2xl font-bold mb-4">Articles</h3>
+              <ul>
+                <li><Link href="/how-message" className="hover:text-blue-300 transition duration-200">Messaging</Link></li>
+                <li><Link href="/how-file" className="hover:text-blue-300 transition duration-200">File Sharing</Link></li>
+                <li><Link href="/features" className="hover:text-blue-300 transition duration-200">New Features</Link></li>
+              </ul>
+            </div>
+            </div>
+            <div>
               <h3 className="text-2xl font-bold mb-4">Rights</h3>
               <ul>
                 <li><Link href="/tos" className="hover:text-blue-300 transition duration-200">Terms of Service</Link></li>
