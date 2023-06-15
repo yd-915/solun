@@ -36,6 +36,3 @@ next-env.d.ts
 
 #uploads
 /public/uploads/files
-
-# environment
-.env.local
