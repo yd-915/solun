@@ -363,9 +363,14 @@ function UploadFile() {
                   </p>
                 </div>
               )}
-              <Link href="how-file" className="text-center text-blue-500 text-sm block mt-4">
+              <div className="flex items-center justify-center flex-col mt-4 gap-2">
+              <Link href="how-file" className="text-center text-blue-500 text-sm block">
                 <FontAwesomeIcon icon={faLink} /> Learn More
               </Link>
+              <Link href="features">
+                <span className="ml-2 inline-block bg-blue-500 text-white text-xs px-2 py-1 rounded-full">Production Beta</span>
+              </Link>
+            </div>
             </form>
           </>
         ) : (
