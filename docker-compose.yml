@@ -1,12 +1,15 @@
-version: '3'
+version: '3.8'
 services:
   solun:
-    image: solun:latest
+    image: ghcr.io/solun-pm/solun:docker
+    container_name: solun
     ports:
       - 3000:3000
     environment:
       - MONGODB_URL=
-      - NEXT_PUBLIC_MAIN_DOMAIN=dev.solun.pm
-      - NEXT_PUBLIC_AUTH_DOMAIN=dev-auth.solun.pm
-      - NEXT_PUBLIC_WEBMAIL_DOMAIN=dev-webmail.solun.pm
+      - NEXT_PUBLIC_MAIN_DOMAIN=
+      - NEXT_PUBLIC_AUTH_DOMAIN=
+      - NEXT_PUBLIC_WEBMAIL_DOMAIN=
+    volumes:
+      - /your/path:/app/public/uploads/files
     restart: always
