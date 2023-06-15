@@ -14,6 +14,7 @@ export async function POST(request: Request) {
     let secret_key = res.secret || null;
     let forceDeleteOn1Download = res.forceDeleteOn1Download;
     let encryptAgain = res.encryptAgain;
+    let mobile = res.mobile;
 
     if (!id) {
       return NextResponse.json({ message: "No file ID provided" }, { status: 400 });
@@ -27,6 +28,10 @@ export async function POST(request: Request) {
 
       const deletionMode = file.auto_delete;
       const ivBuffer = Buffer.from(file.iv, 'hex');
+
+      //if(mobile){
+      //  await encryptFile(file_path, secret_key, ivBuffer);
+      //}
     
       if (deletionMode === 'download'){
         if(encryptAgain) {
@@ -96,7 +101,7 @@ export async function POST(request: Request) {
         } else {
           // default action
           if(encryptAgain) {
-            //await encryptFile(file_path, secret_key, ivBuffer);
+            await encryptFile(file_path, secret_key, ivBuffer);
           }
           await deleteOneDocument(File, { file_id: id });
           fs.unlink(file_path, (err) => {
