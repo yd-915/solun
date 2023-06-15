@@ -2,9 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import toast, { Toaster } from 'react-hot-toast';
 import Header from '@/components/header'
 import Footer from '@/components/footer'
+import { detect } from 'detect-browser';
 
 function ViewFile({ params }: { params: { data: string[] } }) {
   const id = params.data[0];
@@ -22,6 +25,8 @@ function ViewFile({ params }: { params: { data: string[] } }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [downloaded, setDownloaded] = useState(false);
+  const [downloadLoading, setDownloadLoading] = useState(false);
+  const [downloadProcess, setDownloadProcess] = useState('');
 
   const router = useRouter();
   const uploadNewFile = () => {
@@ -75,6 +80,13 @@ function ViewFile({ params }: { params: { data: string[] } }) {
   }
 
   async function handleViewFile(secretKey: string) {
+    const browser = detect();
+    if (browser) {
+      if (browser.os === 'iOS') {
+        toast.error('Sorry, iOS is currently not supported, please use a different device or contact us for help.'); 
+        return;
+      }
+    }
     setLoading(true);
     setError("");
     const data = {
@@ -106,79 +118,82 @@ function ViewFile({ params }: { params: { data: string[] } }) {
   }
 
   async function handleDownloadFile(id: string, secret: string) {
-    if (downloaded) {
-      return;
-    }
-
-    const dataDecrypt = {
-      id,
-      password,
-      secret: secret,
-    };
-    const resDecrypt = await fetch("/api/file/receive", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataDecrypt),
-    });
-
-    const downloadButton = document.getElementById(
-      "downloadButton"
-    ) as HTMLButtonElement;
-    downloadButton.disabled = true;
-    downloadButton.innerHTML =
-      '<div class="flex items-center"><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span class="text-white">Downloading</span></div>';
-    const data = {
-      id,
-      secret,
-    };
-    const res = await fetch("/api/file/download", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!res.ok) {
+    setDownloadLoading(true);
+    setDownloadProcess('Starting...');
+    try {
+      if (downloaded) {
+        return;
+      }
+  
+      const data = {
+        id,
+        secret,
+      };
+  
+      const response = await fetch('/api/file/download', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+  
+      if (!response.ok) {
+        toast.error('Something went wrong, please try again later');
+        setDownloadLoading(false);
+        return;
+      }
+      
+      if (!response.body) {
+        toast.error('Something went wrong, please try again later');
+        setDownloadLoading(false);
+        return;
+      }
+  
+      const reader = response.body.getReader();
+      const contentLength = +response.headers.get('File-Size')!;
+      let receivedLength = 0;
+  
+      const chunks = [];
+      while(true) {
+        const {done, value} = await reader.read();
+  
+        if (done) {
+          break;
+        }
+  
+        chunks.push(value);
+        receivedLength += value.length;
+        const percent = ((receivedLength / contentLength) * 100).toFixed(0);
+        setDownloadProcess(`${percent}%`);
+        //downloadButton.innerHTML = `${percent}%`;
+      }
+  
+      let blob = new Blob(chunks);
+      const fileName = response.headers.get("Content-Disposition")?.split("filename=")[1].replace(/"/g, "") || "file";
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName;
+      link.click();
+      URL.revokeObjectURL(url);
+  
+      await deleteFile(id, secret, true, true);
+  
+      if (response.headers.get("Deletion") === 'download') {
+        setDownloaded(true);
+        setDownloadLoading(false);
+      } else {
+        setDownloadLoading(false);
+        setDownloaded(false);
+      }
+    } catch (err) {
       toast.error('Something went wrong, please try again later');
-      downloadButton.disabled = false;
-      downloadButton.innerHTML = "Download File";
-      return;
+      setDownloadLoading(false);
+      setDownloaded(false);
     }
-
-    const blob = await res.blob();
-    console.log(blob);
-    const fileName =
-      res.headers
-        .get("Content-Disposition")
-        ?.split("filename=")[1]
-        .replace(/"/g, "") || "file";
-    const url = URL.createObjectURL(blob);
-    console.log("FILE", res);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = fileName;
-
-    document.body.appendChild(link);
-    link.click();
-
-    URL.revokeObjectURL(url);
-    document.body.removeChild(link);
-
-    await deleteFile(id, secret, true, true);
-
-    console.log(res.headers.get("Deletion"));
-
-    if (res.headers.get("Deletion") === 'download') {
-      setDownloaded(true);
-      downloadButton.innerHTML = "Downloaded";
-    } else {
-      downloadButton.disabled = false;
-      downloadButton.innerHTML = "Download File";
-    }
-  }
+  }  
+  
 
   useEffect(() => {
     checkId(id);
@@ -245,15 +260,24 @@ function ViewFile({ params }: { params: { data: string[] } }) {
                 </p>
               </div>
               <div className="flex justify-center">
-                <a
-                  id="downloadButton"
-                  onClick={() => {
-                    handleDownloadFile(id, secret);
-                  }}
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-semibold text-lg px-8 py-4 rounded transition duration-200 shadow-lg inline-block text-center cursor-pointer"
-                >
-                  Download File
-                </a>
+              <button
+                id="downloadButton"
+                onClick={() => {
+                  handleDownloadFile(id, secret);
+                }}
+                disabled={downloadLoading || downloaded}
+                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold text-lg px-8 py-4 rounded transition duration-200 shadow-lg inline-block text-center cursor-pointer min-w-max w-58"
+                style={{minWidth: '180px'}}
+              >
+                {downloadLoading ? (
+                  <>
+                    <FontAwesomeIcon icon={faCircleNotch} className="animate-spin" />
+                    <span className="ml-2">{downloadProcess}</span>
+                  </>
+                ) : (
+                  downloaded ? "Downloaded" : "Download File"
+                )}
+              </button>
               </div>
               <div className="flex flex-col justify-center italic items-center mt-4 flex-wrap">
                 <p

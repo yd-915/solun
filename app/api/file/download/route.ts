@@ -50,12 +50,11 @@ export async function POST(request: Request): Promise<Response> {
   },
 });
 
-
-
 const response = new Response(stream);
 response.headers.set("Content-Disposition", `attachment; filename="${file_name}"`);
 response.headers.set("Content-Type", mime.getType(file_name) || "application/octet-stream");
 response.headers.set("Content-Length", fileStats.size.toString());
+response.headers.set("File-Size", file.file_size);
 response.headers.set("Deletion", file.auto_delete);
 
 return response;
@@ -63,7 +62,7 @@ return response;
       return new Response(JSON.stringify({ message: "No file found with this ID" }), { status: 404, headers: { "Content-Type": "application/json" } });
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return new Response(JSON.stringify({ message: "An error occurred while retrieving the file, please check if the link is correct and try again" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
