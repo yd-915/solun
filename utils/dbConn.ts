@@ -16,23 +16,27 @@ if (!cached) {
 }
 
 async function dbConnect() {
-    if (cached.conn) {
+    try {
+        if (cached.conn) {
+            return cached.conn;
+        }
+
+        if (!cached.promise) {
+            const opts = {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+                bufferCommands: false,
+            };
+
+            // @ts-ignore: Works fine with it
+            cached.promise = mongoose.connect(MONGODB_URL, opts).then(mongoose => mongoose);
+        }
+
+        cached.conn = await cached.promise;
         return cached.conn;
+    } catch (error) {
+        console.log(error);
     }
-
-    if (!cached.promise) {
-        const opts = {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            bufferCommands: false,
-        };
-
-        // @ts-ignore: Works fine with it
-        cached.promise = mongoose.connect(MONGODB_URL, opts).then(mongoose => mongoose);
-    }
-
-    cached.conn = await cached.promise;
-    return cached.conn;
 }
 
 export default dbConnect;
