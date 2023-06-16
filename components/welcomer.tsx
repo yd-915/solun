@@ -12,7 +12,7 @@ const Welcomer = () => {
   };
 
   const goToGetStarted = () => {
-    location.href = "https://"+process.env.NEXT_PUBLIC_AUTH_DOMAIN+"/signup";
+    location.href = process.env.NEXT_PUBLIC_AUTH_DOMAIN+"/signup";
   };
 
   return (

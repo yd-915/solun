@@ -13,11 +13,11 @@ const Header = () => {
   };
 
   const goToLogin = () => {
-    location.href = "https://"+process.env.NEXT_PUBLIC_AUTH_DOMAIN+"/login";
+    location.href = process.env.NEXT_PUBLIC_AUTH_DOMAIN+"/login";
   };
 
   const goToSignup = () => {
-    location.href = "https://"+process.env.NEXT_PUBLIC_AUTH_DOMAIN+"/signup";
+    location.href = process.env.NEXT_PUBLIC_AUTH_DOMAIN+"/signup";
   };
 
   return (
