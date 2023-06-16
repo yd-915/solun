@@ -6,7 +6,7 @@ config.autoAddCss = false
 
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_MAIN_DOMAIN as string),
-  title: 'Solun • You\'ve recevied a file',
+  title: 'Solun • You\'ve received a file',
   description: 'Upload and share files with end-to-end encryption, without storing any user related data on our servers. Become anonymous and protect your privacy today.',
   tags: ['Solun', 'Privacy', 'Anonymous', 'Encryption', 'Files', 'Text', 'Emails', 'Share Files', 'Upload Files', 'Send Encrypted Texts'],
   openGraph: {
