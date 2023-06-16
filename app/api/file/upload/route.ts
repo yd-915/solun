@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 
         const insertFile = new File({
             file_id: fid,
-            file_path: 'https://'+ process.env.NEXT_PUBLIC_MAIN_DOMAIN + relativeUploadDir + systemFilename,
+            file_path: process.env.NEXT_PUBLIC_MAIN_DOMAIN + relativeUploadDir + systemFilename,
             raw_file_path: filePath,
             file_name: dbFilename,
             file_type: file.type,
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
 
         await insertFile.save();
 
-        let link = "https://"+ process.env.NEXT_PUBLIC_MAIN_DOMAIN +"/file/" + fid + "/";
+        let link = process.env.NEXT_PUBLIC_MAIN_DOMAIN +"/file/" + fid + "/";
         if (endToEndEncryption as boolean) {
             link += secret_key + "/";
         }

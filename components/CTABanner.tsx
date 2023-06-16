@@ -3,7 +3,7 @@
 import React from 'react';
 
 const goToSignup = () => {
-  location.href = "https://"+process.env.NEXT_PUBLIC_AUTH_DOMAIN+"/signup";
+  location.href = process.env.NEXT_PUBLIC_AUTH_DOMAIN+"/signup";
 };
 
 const CTABanner = () => {
