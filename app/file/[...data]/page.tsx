@@ -270,7 +270,7 @@ function ViewFile({ params }: { params: { data: string[] } }) {
           showFile ? (
             <div>
               <h1 className="text-2xl font-bold mb-4 text-gray-100">
-                Your File <span className="text-gray-400">({id})</span>
+                Your File
               </h1>
               <div className="p-4 mb-4 text-white rounded-lg bg-gradient-to-r from-blue-600 to-blue-800">
                 <p className="mb-2 break-all">
