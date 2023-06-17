@@ -1,9 +1,6 @@
-import dbConnect from "@/utils/dbConn";
+import { dbConnect, findOneDocument, decrypt, Message, comparePassword } from 'solun-general-package';
+
 import { NextResponse } from "next/server";
-import { findOneDocument } from "@/utils/dbUtils";
-import { decrypt } from "@/utils/encryption";
-import Message from "@/models/message";
-import { comparePassword } from "@/utils/hash";
 
 export async function POST(request: Request) {
   try {
