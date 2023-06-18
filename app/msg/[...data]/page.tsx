@@ -28,7 +28,7 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
     const data = {
       id,
     };
-    const res = await fetch("/api/message/check", {
+    const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/message/check', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -50,7 +50,7 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
     const data = {
       id,
     };
-    const res = await fetch("/api/message/delete", {
+    const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/message/delete', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +73,7 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
       password,
       secret: secretKey,
     };
-    const res = await fetch("/api/message/receive", {
+    const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/message/receive', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

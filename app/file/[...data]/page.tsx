@@ -42,7 +42,7 @@ function ViewFile({ params }: { params: { data: string[] } }) {
     const data = {
       id,
     };
-    const res = await fetch("/api/file/check", {
+    const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/file/check', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -99,7 +99,7 @@ function ViewFile({ params }: { params: { data: string[] } }) {
       password,
       secret: secretKey,
     };
-    const res = await fetch("/api/file/receive", {
+    const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/file/receive', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
