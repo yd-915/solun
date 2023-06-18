@@ -114,7 +114,7 @@ function CreateMessage() {
             tmpEncryptPwd,
             endToEndEncryption
           };
-            const res = await fetch('/api/message/create', {
+            const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/message/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
