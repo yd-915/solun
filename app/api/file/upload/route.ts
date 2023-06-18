@@ -1,4 +1,6 @@
-import { dbConnect, generateID, generateAES, generateIV, encryptFile, decryptTransfer, File, hashPassword } from "solun-general-package";
+import { generateID, generateAES, generateIV, decryptTransfer, hashPassword } from "solun-general-package";
+import { dbConnect, File } from "solun-database-package";
+import { encryptFile } from "solun-server-encryption-package";
 
 import { join } from "path";
 import { stat, mkdir, writeFile } from "fs/promises";

@@ -1,4 +1,5 @@
-import { dbConnect, findOneDocument, decryptFile, File } from "solun-general-package";
+import { dbConnect, findOneDocument, File } from "solun-database-package";
+import { decryptFile } from "solun-server-encryption-package";
 
 import fs from "fs";
 import mime from "mime";

@@ -1,4 +1,5 @@
-import { dbConnect, findOneDocument, File, comparePassword } from "solun-general-package";
+import { comparePassword } from "solun-general-package";
+import { dbConnect, findOneDocument, File } from "solun-database-package";
 
 import { NextResponse } from "next/server";
 

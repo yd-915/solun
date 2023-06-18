@@ -1,12 +1,10 @@
 "use client";
 
+import { encryptTransfer, generateAES, generateID, generatePassword } from 'solun-general-package';
+
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash, faQuestionCircle, faLink, faRefresh } from '@fortawesome/free-solid-svg-icons'
-import { encryptTransfer } from '@/utils/clientEncryption';
-import generateAES from "@/utils/generateAES";
-import generateID from "@/utils/generateId";
-import generatePassword from '@/utils/generatePassword';
 import Link from 'next/link';
 import Header from '@/components/header'
 import Footer from '@/components/footer'
@@ -77,7 +75,7 @@ function CreateMessage() {
 
   const handlePasswordGenerator = () => {
     const generatedPassword = generatePassword(12);
-    const field = document.getElementById('password') as HTMLInputElement;
+    const field = document.getElementById('password') as any;
     field.value = generatedPassword;
     handlePasswordChange({target: {value: generatedPassword}});
   };
@@ -105,7 +103,7 @@ function CreateMessage() {
           const endToEndEncryption = target.endToEndEncryption.checked;
 
           const tmpEncryptMsg = await encryptTransfer(message);
-          let tmpEncryptPwd = '';
+          let tmpEncryptPwd = '' as any;
           if(password !== '') {
             tmpEncryptPwd = await encryptTransfer(password);
           }

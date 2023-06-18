@@ -1,4 +1,5 @@
-import { dbConnect, findOneDocument, deleteOneDocument, encryptFile, File } from "solun-general-package";
+import { dbConnect, findOneDocument, deleteOneDocument, File } from "solun-database-package";
+import { encryptFile } from "solun-server-encryption-package";
 
 import { NextResponse } from "next/server";
 import fs from "fs";

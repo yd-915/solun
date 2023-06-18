@@ -1,4 +1,6 @@
-import { dbConnect, findOneDocument, decrypt, Message, comparePassword } from 'solun-general-package';
+import { comparePassword } from 'solun-general-package';
+import { dbConnect, findOneDocument, Message } from 'solun-database-package';
+import { decrypt } from 'solun-server-encryption-package';
 
 import { NextResponse } from "next/server";
 

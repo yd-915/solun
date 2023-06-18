@@ -1,13 +1,11 @@
 "use client";
 
+import { generateAES, generateID, generatePassword, encryptTransfer } from 'solun-general-package';
+
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash, faCloudUploadAlt, faQuestionCircle, faLink, faRefresh } from '@fortawesome/free-solid-svg-icons'
-import generateAES from "@/utils/generateAES";
-import generateID from "@/utils/generateId";
-import generatePassword from '@/utils/generatePassword';
 import Link from 'next/link';
-import { encryptTransfer } from '@/utils/clientEncryption';
 import axios from 'axios';
 import Header from '@/components/header'
 import Footer from '@/components/footer'
@@ -81,7 +79,7 @@ function UploadFile() {
 
   const handlePasswordGenerator = () => {
     const generatedPassword = generatePassword(12);
-    const field = document.getElementById('password') as HTMLInputElement;
+    const field = document.getElementById('password') as any;
     field.value = generatedPassword;
     handlePasswordChange({target: {value: generatedPassword}});
   };
@@ -114,7 +112,7 @@ function UploadFile() {
     const password = target.password.value;
     const endToEndEncryption = target.endToEndEncryption.checked;
 
-    let tmpEncryptPwd = '';
+    let tmpEncryptPwd = '' as any;
     if(password !== '') {
       tmpEncryptPwd = await encryptTransfer(password);
     }

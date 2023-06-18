@@ -1,4 +1,4 @@
-import { dbConnect, findOneDocument, Message } from 'solun-general-package';
+import { dbConnect, findOneDocument, Message } from 'solun-database-package';
 
 import { NextResponse } from "next/server";
 

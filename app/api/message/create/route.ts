@@ -1,4 +1,6 @@
-import { dbConnect, generateID, generateAES, encrypt, decryptTransfer, Message, hashPassword } from 'solun-general-package';
+import { generateID, generateAES, decryptTransfer, hashPassword } from 'solun-general-package';
+import { dbConnect, Message } from 'solun-database-package';
+import { encrypt } from 'solun-server-encryption-package';
 
 import { NextResponse } from "next/server";
 
