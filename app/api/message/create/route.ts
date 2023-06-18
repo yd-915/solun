@@ -1,11 +1,8 @@
-import dbConnect from "@/utils/dbConn";
-import generateID from "@/utils/generateId";
-import generateAES from "@/utils/generateAES";
-import { encrypt } from "@/utils/encryption";
-import { decryptTransfer } from "@/utils/clientEncryption";
-import Message from "@/models/message";
+import { generateID, generateAES, decryptTransfer, hashPassword } from 'solun-general-package';
+import { dbConnect, Message } from 'solun-database-package';
+import { encrypt } from 'solun-server-encryption-package';
+
 import { NextResponse } from "next/server";
-import { hashPassword } from "@/utils/hash";
 
 export async function POST(request: Request) {
     try {

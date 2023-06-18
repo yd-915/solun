@@ -1,8 +1,7 @@
-import dbConnect from "@/utils/dbConn";
+import { dbConnect, findOneDocument, deleteOneDocument, File } from "solun-database-package";
+import { encryptFile } from "solun-server-encryption-package";
+
 import { NextResponse } from "next/server";
-import { findOneDocument, deleteOneDocument } from "@/utils/dbUtils";
-import { encryptFile } from "@/utils/encryption";
-import File from "@/models/file";
 import fs from "fs";
 
 export async function POST(request: Request) {

@@ -1,17 +1,12 @@
-import mime from "mime";
+import { generateID, generateAES, generateIV, decryptTransfer, hashPassword } from "solun-general-package";
+import { dbConnect, File } from "solun-database-package";
+import { encryptFile } from "solun-server-encryption-package";
+
 import { join } from "path";
 import { stat, mkdir, writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
-import dbConnect from "@/utils/dbConn";
-import generateID from "@/utils/generateId";
-import generateAES from "@/utils/generateAES";
-import generateIV from "@/utils/generateIV";
-import { encrypt, encryptFile } from "@/utils/encryption";
-import { decryptTransfer } from "@/utils/clientEncryption";
-import File from "@/models/file";
 import crypto from "crypto";
 import { extname } from "path";
-import { hashPassword } from "@/utils/hash";
 
 
 export async function POST(request: NextRequest) {
@@ -20,7 +15,7 @@ export async function POST(request: NextRequest) {
     await dbConnect();
 
     let bruteforceSafe = formData.get("bruteforceSafe") === "true";
-    let password = formData.get("password") as string;
+    let password = formData.get("password") as any;
     let endToEndEncryption = formData.get("endToEndEncryption") === "true";    
     let autoDeletion = formData.get("autoDeletion");
 

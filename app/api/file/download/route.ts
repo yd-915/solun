@@ -1,13 +1,10 @@
-import dbConnect from "@/utils/dbConn";
-import { findOneDocument, deleteOneDocument } from "@/utils/dbUtils";
-import File from "@/models/file";
+import { dbConnect, findOneDocument, File } from "solun-database-package";
+import { decryptFile } from "solun-server-encryption-package";
+
 import fs from "fs";
-import { decryptFile } from "@/utils/encryption";
 import mime from "mime";
 import { ReadableStream } from "web-streams-polyfill";
 import { Buffer } from "buffer";
-
-
 
 export async function POST(request: Request): Promise<Response> {
   try {

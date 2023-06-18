@@ -1,7 +1,6 @@
-import dbConnect from "@/utils/dbConn";
+import { dbConnect, findOneDocument, Message } from 'solun-database-package';
+
 import { NextResponse } from "next/server";
-import { findOneDocument } from "@/utils/dbUtils";
-import Message from "@/models/message";
 
 export async function POST(request: Request) {
     try {

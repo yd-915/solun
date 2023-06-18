@@ -10,7 +10,7 @@ export const metadata = {
   description: 'Upload and share files with end-to-end encryption, without storing any user related data on our servers. Become anonymous and protect your privacy today.',
   tags: ['Solun', 'Privacy', 'Anonymous', 'Encryption', 'Files', 'Text', 'Emails', 'Share Files', 'Upload Files', 'Send Encrypted Texts'],
   openGraph: {
-    title: 'Solun • You\'ve recevied a file',
+    title: 'Solun • You\'ve received a file',
     description: 'Upload and share files with end-to-end encryption, without storing any user related data on our servers. Become anonymous and protect your privacy today.',
     siteName: 'Solun',
     images: [
