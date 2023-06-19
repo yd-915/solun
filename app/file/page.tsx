@@ -148,7 +148,6 @@ function UploadFile() {
           alert(data.message);
         }
       } catch (err) {
-        toast('err: ' + err)
         toast.error('There was an error uploading your file');
       }
     }
