@@ -129,13 +129,16 @@ function UploadFile() {
       const config = {
         onUploadProgress: function(progressEvent: ProgressEvent) {
           var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          if (percentCompleted === 100) {
+            toast('Processing your file... This may take a while');
+          }
           setUploadPercentage(percentCompleted);
         }
       };
       
       try {
         // @ts-ignore Config is not assignable to type AxiosRequestConfig
-        const response = await axios.post('/api/file/upload', formData, config);
+        const response = await axios.post(process.env.NEXT_PUBLIC_API_DOMAIN + '/file/upload', formData, config);
         
         const data = await response.data;
         if (response.status === 200) {

@@ -68,7 +68,7 @@ function ViewFile({ params }: { params: { data: string[] } }) {
       encryptAgain,
       mobile,
     };
-    const res = await fetch("/api/file/delete", {
+    const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + "/file/delete", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -135,7 +135,7 @@ function ViewFile({ params }: { params: { data: string[] } }) {
         secret,
       };
   
-      const response = await fetch('/api/file/download', {
+      const response = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/file/download', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ function ViewFile({ params }: { params: { data: string[] } }) {
       if (!isMobile) {
         await deleteFile(id, secret, true, true);
       }
-  
+      
       if (response.headers.get("Deletion") === 'download') {
         setDownloaded(true);
         setDownloadLoading(false);
