@@ -73,8 +73,8 @@ function CreateMessage() {
     setPassword(event.target.value);
   }; 
 
-  const handlePasswordGenerator = () => {
-    const generatedPassword = generatePassword(12);
+  async function handlePasswordGenerator () {
+    const generatedPassword = await generatePassword(12);
     const field = document.getElementById('password') as any;
     field.value = generatedPassword;
     handlePasswordChange({target: {value: generatedPassword}});
