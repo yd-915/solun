@@ -109,7 +109,7 @@ function CreateMessage() {
         const passwordSet = password !== "";
         const encrypted_password = passwordSet ? await hashPassword(password) : null;
 
-        const dbSecretKey = endToEndEncryption ? null : secret_key;
+        const dbSecretKey = endToEndEncryption ? secret_key : null;
 
         const data = {
           mid,
