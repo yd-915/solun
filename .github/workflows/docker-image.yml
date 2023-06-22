@@ -77,7 +77,12 @@ jobs:
           curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
           -H "Content-Type: application/json" \
           -d '{
-            "content": "We are running a new Solun Production Version on https://solun.pm\nVersion: '$PACKAGE_VERSION'\nSee the changes here: [Commit]<'$COMMIT_LINK'>"
+            "embeds": [{
+              "title": "New Prod Version",
+              "url": "'$COMMIT_LINK'",
+              "description": "Version: '$PACKAGE_VERSION'",
+              "color": 255
+            }]
           }'
 
       - name: Discord Webhook for Dev
@@ -88,7 +93,12 @@ jobs:
           curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
           -H "Content-Type: application/json" \
           -d '{
-            "content": "We are running a new Solun Development Version on https://dev.solun.pm\nVersion: '$PACKAGE_VERSION'\nSee the changes here: [Commit]<'$COMMIT_LINK'>"
+            "embeds": [{
+              "title": "New Dev Version",
+              "url": "'$COMMIT_LINK'",
+              "description": "Version: '$PACKAGE_VERSION'",
+              "color": 16753920
+            }]
           }'
 
 
