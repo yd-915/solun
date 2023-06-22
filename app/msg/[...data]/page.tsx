@@ -86,7 +86,7 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
       toast.error(result.message);
     } else {
       const serect_key = result.secret || secretKey;
-      const decryptedMessage = await decrypt(result.message, serect_key);
+      const decryptedMessage = await decrypt(result.message, serect_key as string);
       setMessage(decryptedMessage);
       setShowMessage(true);
 
