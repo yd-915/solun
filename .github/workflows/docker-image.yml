@@ -78,9 +78,12 @@ jobs:
           -H "Content-Type: application/json" \
           -d '{
             "embeds": [{
-              "title": "New Prod Version",
-              "url": "'$COMMIT_LINK'",
-              "description": "Version: '$PACKAGE_VERSION'",
+              "title": "New Production Version deployed on solun.pm",
+              "url": "https://solun.pm",
+              "fields": [
+                { "name": "Version", "value": "'$PACKAGE_VERSION'", "inline": false },
+                { "name": "Changes", "value": "[Changes]('$COMMIT_LINK')", "inline": false }
+              ],
               "color": 255
             }]
           }'
@@ -94,12 +97,12 @@ jobs:
           -H "Content-Type: application/json" \
           -d '{
             "embeds": [{
-              "title": "New Dev Version",
-              "url": "'$COMMIT_LINK'",
-              "description": "Version: '$PACKAGE_VERSION'",
+              "title": "New Development Version deployed on dev.solun.pm",
+              "url": "https://dev.solun.pm",
+              "fields": [
+                { "name": "Version", "value": "'$PACKAGE_VERSION'", "inline": false },
+                { "name": "Changes", "value": "[Changes]('$COMMIT_LINK')", "inline": false }
+              ],
               "color": 16753920
             }]
           }'
-
-
-      
