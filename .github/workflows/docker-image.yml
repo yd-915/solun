@@ -82,7 +82,7 @@ jobs:
               "url": "https://solun.pm",
               "fields": [
                 { "name": "Version", "value": "'$PACKAGE_VERSION'", "inline": false },
-                { "name": "Changes", "value": "[Changes]('$COMMIT_LINK')", "inline": false }
+                { "name": "[Changes]('$COMMIT_LINK')", "value": "", "inline": false }
               ],
               "color": 255
             }]
@@ -101,7 +101,7 @@ jobs:
               "url": "https://dev.solun.pm",
               "fields": [
                 { "name": "Version", "value": "'$PACKAGE_VERSION'", "inline": false },
-                { "name": "Changes", "value": "[Changes]('$COMMIT_LINK')", "inline": false }
+                { "name": "[Changes]('$COMMIT_LINK')", "value": "", "inline": false }
               ],
               "color": 16753920
             }]
