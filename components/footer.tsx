@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+const { version } = require('../package.json');
 
 const Footer = () => {
   return (
@@ -10,6 +11,12 @@ const Footer = () => {
             <h2 className="text-3xl font-bold">Solun</h2>
             <p className="mt-4">
               E-Mail: contact@solun.pm
+            </p>
+            <p>
+              Version: {version}
+            </p>
+            <p>
+              Copyright © {new Date().getFullYear()} Solun
             </p>
           </div>
           <div className="flex flex-col md:flex-row text-white md:gap-10">
