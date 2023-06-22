@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import toast, { Toaster } from 'react-hot-toast';
 import Header from '@/components/header'
 import Footer from '@/components/footer'
+import { decrypt } from 'solun-general-package';
 
 function ViewMessage({ params }: { params: { data: string[] } }) {
 
@@ -82,9 +83,11 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
     });
     const result = await res.json();
     if (!res.ok) {
-      setError(result.message);
+      toast.error(result.message);
     } else {
-      setMessage(result.message);
+      const serect_key = result.secret || secretKey;
+      const decryptedMessage = await decrypt(result.message, serect_key);
+      setMessage(decryptedMessage);
       setShowMessage(true);
 
       await deleteMessage(id);
