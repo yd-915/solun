@@ -64,3 +64,18 @@ jobs:
       - name: Restart Node 2
         run: |
           curl -X POST ${{ secrets.WEBHOOK_DOMAIN }}/hooks/restart-app-2
+          
+      - name: Discord Webhook for Main
+        if: github.ref == 'refs/heads/main'
+        run: >
+          curl -X POST ${{ secrets.DISCORD_WEBHOOK }} 
+          -H "Content-Type: application/json" 
+          -d '{"content":"We are runnung a new Solun Production Version on https://solun.pm"}'
+
+      - name: Discord Webhook for Dev
+        if: github.ref == 'refs/heads/dev'
+        run: >
+          curl -X POST ${{ secrets.DISCORD_WEBHOOK }} 
+          -H "Content-Type: application/json" 
+          -d '{"content":"We are runnung a new Solun Development Version on https://dev.solun.pm"}'
+      
