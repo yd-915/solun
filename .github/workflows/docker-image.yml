@@ -80,9 +80,9 @@ jobs:
             "embeds": [{
               "title": "New Production Version deployed on solun.pm",
               "url": "https://solun.pm",
+              "description": "[Changes]('$COMMIT_LINK')",
               "fields": [
-                { "name": "Version", "value": "'$PACKAGE_VERSION'", "inline": false },
-                { "name": "[Changes]('$COMMIT_LINK')", "value": "", "inline": false }
+                { "name": "Version", "value": "'$PACKAGE_VERSION'", "inline": false }
               ],
               "color": 255
             }]
@@ -99,9 +99,9 @@ jobs:
             "embeds": [{
               "title": "New Development Version deployed on dev.solun.pm",
               "url": "https://dev.solun.pm",
+              "description": "[Changes]('$COMMIT_LINK')",
               "fields": [
-                { "name": "Version", "value": "'$PACKAGE_VERSION'", "inline": false },
-                { "name": "[Changes]('$COMMIT_LINK')", "value": "", "inline": false }
+                { "name": "Version", "value": "'$PACKAGE_VERSION'", "inline": false }
               ],
               "color": 16753920
             }]
