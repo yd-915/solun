@@ -1,6 +1,6 @@
 "use client";
 
-import { generateAES, generateID, generatePassword, encryptTransfer } from 'solun-general-package';
+import { generateAES, generateID, generatePassword, encryptTransfer, hashPassword } from 'solun-general-package';
 
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -112,17 +112,15 @@ function UploadFile() {
     const password = target.password.value;
     const endToEndEncryption = target.endToEndEncryption.checked;
 
-    let tmpEncryptPwd = '' as any;
-    if(password !== '') {
-      tmpEncryptPwd = await encryptTransfer(password);
-    }
+    const passwordSet = password !== "";
+    const encrypted_password = passwordSet ? await hashPassword(password) : null;
 
 
     if (files.length > 0) {
       const formData = new FormData();
       formData.append('file', files[0]);
       formData.append('bruteforceSafe', bruteforceSafe.toString());
-      formData.append('password', tmpEncryptPwd);
+      formData.append('password', encrypted_password);
       formData.append('endToEndEncryption', endToEndEncryption.toString());
       formData.append('autoDeletion', target.autoDeletion.value);
 

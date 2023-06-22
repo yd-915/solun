@@ -1,6 +1,6 @@
 "use client";
 
-import { encryptTransfer, generateAES, generateID, generatePassword } from 'solun-general-package';
+import { generateAES, generateID, generatePassword, encrypt, hashPassword } from 'solun-general-package';
 
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -80,57 +80,62 @@ function CreateMessage() {
     handlePasswordChange({target: {value: generatedPassword}});
   };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-          e.preventDefault();
-          const target = e.target as typeof e.target & {
-          message: { value: string };
-          bruteforceSafe: { checked: boolean };
-          password: { value: string };
-          endToEndEncryption: { checked: boolean };
+  const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const target = e.target as typeof e.target & {
+        message: { value: string };
+        bruteforceSafe: { checked: boolean };
+        password: { value: string };
+        endToEndEncryption: { checked: boolean };
+      };
+
+      const submitButton = document.getElementById('submit') as HTMLButtonElement;
+      const message_text = target.message.value;
+
+      if(message_text === '') {
+        toast.error('Please enter a message');
+      } else {
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<div class="flex items-center"><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span class="text-white">Creating</span></div>';
+        
+        const bruteforceSafe = target.bruteforceSafe.checked;
+        const password = target.password.value;
+        const endToEndEncryption = target.endToEndEncryption.checked;
+
+        const mid = await generateID(bruteforceSafe);
+        const secret_key = await generateAES();
+        const encrypted_message = await encrypt(message_text, secret_key as string);
+
+        const passwordSet = password !== "";
+        const encrypted_password = passwordSet ? await hashPassword(password) : null;
+
+        const dbSecretKey = endToEndEncryption ? null : secret_key;
+
+        const data = {
+          mid,
+          encrypted_message,
+          dbSecretKey,
+          encrypted_password
         };
 
-        // Set Button disabled and add loading animation and text "Creating Message"
-        const submitButton = document.getElementById('submit') as HTMLButtonElement;
-        const message = target.message.value;
+        const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/message/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+        })
 
-        if(message === '') {
-          toast.error('Please enter a message');
+        const result = await res.json();
+        if(!res.ok) {
+            toast.error('There was an error creating your message');
+            submitButton.disabled = false;
+            submitButton.innerHTML = 'Create';
         } else {
-          submitButton.disabled = true;
-          submitButton.innerHTML = '<div class="flex items-center"><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span class="text-white">Creating</span></div>';
-          const bruteforceSafe = target.bruteforceSafe.checked;
-          const password = target.password.value;
-          const endToEndEncryption = target.endToEndEncryption.checked;
-
-          const tmpEncryptMsg = await encryptTransfer(message);
-          let tmpEncryptPwd = '' as any;
-          if(password !== '') {
-            tmpEncryptPwd = await encryptTransfer(password);
-          }
-
-          const data = {
-            tmpEncryptMsg,
-            bruteforceSafe,
-            tmpEncryptPwd,
-            endToEndEncryption
-          };
-            const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/message/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data),
-            })
-            const result = await res.json();
-            if(!res.ok) {
-                toast.error('There was an error creating your message');
-                submitButton.disabled = false;
-                submitButton.innerHTML = 'Create';
-            } else {
-                setMessageCreated(true);
-                setMessageLink(result.link);
-            }
+            setMessageCreated(true);
+            setMessageLink(result.link);
         }
+      }
     };
 
   return (
