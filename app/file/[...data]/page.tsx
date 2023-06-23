@@ -56,6 +56,7 @@ function ViewFile({ params }: { params: { data: string[] } }) {
       setFileExists(false);
     } else {
       setFileExists(true);
+      console.log(result.password)
       setPasswordProtected(result.password);
     }
   }

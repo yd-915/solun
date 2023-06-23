@@ -115,8 +115,6 @@ function UploadFile() {
     const passwordSet = password !== "";
     const encrypted_password = passwordSet ? await hashPassword(password) : null;
 
-    console.log(bruteforceSafe, password, endToEndEncryption, encrypted_password)
-
     if (files.length > 0) {
       const formData = new FormData();
       formData.append('file', files[0]);
