@@ -76,7 +76,7 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
       password,
     };
   
-    if(secretKey !== ""){
+    if(secretKey === ""){
       data.secret = secretKey;
     }
     const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/message/receive', {
