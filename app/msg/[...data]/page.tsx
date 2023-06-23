@@ -69,7 +69,6 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
   async function handleViewMessage(secretKey: string) {
     setLoading(true);
     setError("");
-    console.log(id + ' ' + password + ' ' + secretKey)
   
     const data: any = {
       id,
@@ -91,9 +90,7 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
       toast.error(result.message);
     } else {
       const serect_key = result.secret || secretKey;
-      console.log(serect_key)
       const decryptedMessage = await decrypt(result.message, serect_key as string);
-      console.log(decryptedMessage)
       setMessage(decryptedMessage);
       setShowMessage(true);
 

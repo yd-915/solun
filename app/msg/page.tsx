@@ -137,7 +137,6 @@ function CreateMessage() {
             if (dbSecretKey === null) {
               resultLink += `${secret_key}/`;
             }
-            console.log('resultLink: ' + resultLink)
             setMessageLink(resultLink);
         }
       }
