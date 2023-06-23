@@ -118,6 +118,8 @@ function CreateMessage() {
           encrypted_password
         };
 
+        console.log('data: ' + data);
+
         const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/message/create', {
             method: 'POST',
             headers: {
@@ -133,7 +135,12 @@ function CreateMessage() {
             submitButton.innerHTML = 'Create';
         } else {
             setMessageCreated(true);
-            setMessageLink(result.link);
+            let resultLink = result.link;
+            if (dbSecretKey === null) {
+              resultLink += `${secret_key}/`;
+            }
+            console.log('resultLink: ' + resultLink)
+            setMessageLink(resultLink);
         }
       }
     };
