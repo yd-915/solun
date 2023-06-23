@@ -118,8 +118,6 @@ function CreateMessage() {
           encrypted_password
         };
 
-        console.log('data: ' + data);
-
         const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/message/create', {
             method: 'POST',
             headers: {
