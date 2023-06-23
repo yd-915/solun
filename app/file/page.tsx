@@ -142,7 +142,7 @@ function UploadFile() {
           setUploadLink(data.link);
           setUploadCreated(true);
         } else {
-          alert(data.message);
+          toast.error(data.message);
         }
       } catch (err) {
         toast.error('There was an error uploading your file');
