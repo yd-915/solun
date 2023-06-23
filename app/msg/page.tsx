@@ -104,12 +104,15 @@ function CreateMessage() {
 
         const mid = await generateID(bruteforceSafe);
         const secret_key = await generateAES();
+        console.log(message_text)
         const encrypted_message = await encrypt(message_text, secret_key as string);
+        console.log(encrypted_message)
 
         const passwordSet = password !== "";
         const encrypted_password = passwordSet ? await hashPassword(password) : null;
 
         const dbSecretKey = endToEndEncryption ? null : secret_key;
+        console.log(dbSecretKey)
 
         const data = {
           mid,
