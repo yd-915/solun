@@ -70,11 +70,15 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
     setLoading(true);
     setError("");
     console.log(id + ' ' + password + ' ' + secretKey)
-    const data = {
+  
+    const data: any = {
       id,
       password,
-      secret: secretKey,
     };
+  
+    if(secretKey !== ""){
+      data.secret = secretKey;
+    }
     const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/message/receive', {
       method: "POST",
       headers: {
