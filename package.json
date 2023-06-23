@@ -1,12 +1,14 @@
 {
   "name": "solun",
-  "version": "0.1.3",
+  "version": "0.3.5",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "version": "git add .",
+    "postversion": "git push"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",

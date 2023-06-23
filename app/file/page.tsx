@@ -115,7 +115,6 @@ function UploadFile() {
     const passwordSet = password !== "";
     const encrypted_password = passwordSet ? await hashPassword(password) : null;
 
-
     if (files.length > 0) {
       const formData = new FormData();
       formData.append('file', files[0]);
@@ -143,7 +142,7 @@ function UploadFile() {
           setUploadLink(data.link);
           setUploadCreated(true);
         } else {
-          alert(data.message);
+          toast.error(data.message);
         }
       } catch (err) {
         toast.error('There was an error uploading your file');

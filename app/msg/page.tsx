@@ -109,7 +109,7 @@ function CreateMessage() {
         const passwordSet = password !== "";
         const encrypted_password = passwordSet ? await hashPassword(password) : null;
 
-        const dbSecretKey = endToEndEncryption ? secret_key : null;
+        const dbSecretKey = endToEndEncryption ? null : secret_key;
 
         const data = {
           mid,
@@ -133,7 +133,11 @@ function CreateMessage() {
             submitButton.innerHTML = 'Create';
         } else {
             setMessageCreated(true);
-            setMessageLink(result.link);
+            let resultLink = result.link;
+            if (dbSecretKey === null) {
+              resultLink += `${secret_key}/`;
+            }
+            setMessageLink(resultLink);
         }
       }
     };

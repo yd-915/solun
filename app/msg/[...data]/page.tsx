@@ -69,11 +69,15 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
   async function handleViewMessage(secretKey: string) {
     setLoading(true);
     setError("");
-    const data = {
+  
+    const data: any = {
       id,
       password,
-      secret: secretKey,
     };
+  
+    if(secretKey === ""){
+      data.secret = secretKey;
+    }
     const res = await fetch(process.env.NEXT_PUBLIC_API_DOMAIN + '/message/receive', {
       method: "POST",
       headers: {
@@ -86,7 +90,7 @@ function ViewMessage({ params }: { params: { data: string[] } }) {
       toast.error(result.message);
     } else {
       const serect_key = result.secret || secretKey;
-      const decryptedMessage = await decrypt(result.message, serect_key);
+      const decryptedMessage = await decrypt(result.message, serect_key as string);
       setMessage(decryptedMessage);
       setShowMessage(true);
 
